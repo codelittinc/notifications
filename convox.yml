@@ -1,0 +1,17 @@
+resources:
+  database:
+    type: postgres
+
+services:
+  notifications-api:
+    build: .
+    port: 3000
+    domain: ${HOST}
+    resources:
+      - database
+    environment:
+      - LOG_ENV=
+      - LOG_HOST=
+      - SLACK_API_KEY
+      - ENVIRONMENT=development
+      - SECRET_KEY_BASE=no-value
