@@ -1,4 +1,4 @@
-FROM ruby:3.0.0-buster
+FROM ruby:3.0.1-buster
 
 ARG ENVIRONMENT
 ARG SECRET_KEY_BASE
