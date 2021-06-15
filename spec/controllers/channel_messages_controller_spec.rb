@@ -11,7 +11,8 @@ RSpec.describe ChannelMessagesController, type: :controller do
         ts: '123'
       }
 
-      expect_any_instance_of(Clients::SlackClient).to receive(:create_message!)
+      expect_any_instance_of(Clients::SlackClient)
+        .to receive(:create_channel_message!)
         .with('#general', 'Hello World', '123', true)
 
       post :create, params: json

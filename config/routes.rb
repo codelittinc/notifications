@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'application#index'
   resources :channel_messages, only: %i[create update]
+  resources :direct_messages, only: :create
 end

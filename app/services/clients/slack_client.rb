@@ -12,12 +12,19 @@ module Clients
       # rubocop:enable Rails/EnvironmentVariableAccess
     end
 
-    def create_message!(channel, text, thread_ts, link_names)
+    def create_channel_message!(channel, text, thread_ts, link_names)
       client.chat_postMessage(
         channel: channel,
         text: text,
         thread_ts: thread_ts,
         link_names: link_names
+      )
+    end
+
+    def create_direct_message!(channel, text)
+      client.chat_postMessage(
+        channel: channel,
+        text: text
       )
     end
 
