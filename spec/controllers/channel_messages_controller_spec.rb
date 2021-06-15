@@ -8,7 +8,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
       json = {
         channel: 'general',
         message: 'Hello World',
-        timestamp: '123'
+        ts: '123'
       }
 
       expect_any_instance_of(Clients::SlackClient).to receive(:create_message!)
