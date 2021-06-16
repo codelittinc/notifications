@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   root 'application#index'
   resources :channel_messages, only: %i[create update]
   resources :direct_messages, only: :create
+  resources :reactions, only: %i[index create]
 end
