@@ -8,4 +8,12 @@ Rails.application.routes.draw do
   resources :direct_messages, only: :create, defaults: { format: :json }
   resources :reactions, only: %i[index create], defaults: { format: :json }
   resources :users, only: :index, defaults: { format: :json }
+
+  post '/channel-messages', to: 'channel_messages#create',
+                            defaults: { format: :json }
+  patch '/channel-messages', to: 'channel_messages#update',
+                             defaults: { format: :json }
+
+  post '/direct-messages', to: 'direct_messages#create',
+                           defaults: { format: :json }
 end
