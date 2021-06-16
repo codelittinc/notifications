@@ -71,6 +71,14 @@ module Clients
       )
     end
 
+    def list_users
+      response = client.users_list
+      members = response['members']
+      members.map do |member|
+        member['name']
+      end
+    end
+
     private
 
     def client
