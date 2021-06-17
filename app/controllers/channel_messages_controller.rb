@@ -4,21 +4,17 @@ class ChannelMessagesController < ApplicationController
   before_action :set_client, only: %i[create update]
 
   def create
-    render json: @client.create_channel_message!(
-      formatted_channel,
-      message,
-      timestamp,
-      true
-    )
+    MessageCreator.new('create', 'channel', message, formatted_channel).create!
+
+    render json: @client.create_channel_message!(formatted_channel, message,
+                                                 timestamp, true)
   end
 
   def update
-    render json: @client.update_message!(
-      formatted_channel,
-      message,
-      timestamp,
-      true
-    )
+    MessageCreator.new('update', 'channel', message, formatted_channel).create!
+
+    render json: @client.update_message!(formatted_channel, message, timestamp,
+                                         true)
   end
 
   private
