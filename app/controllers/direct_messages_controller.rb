@@ -3,7 +3,7 @@
 class DirectMessagesController < ApplicationController
   def create
     client = Clients::SlackClient.new
-    client.create_direct_message!(
+    render json: client.create_direct_message!(
       formatted_username,
       message
     )
@@ -11,5 +11,9 @@ class DirectMessagesController < ApplicationController
 
   def formatted_username
     "@#{params[:username]}"
+  end
+
+  def message
+    params[:message]
   end
 end

@@ -4,11 +4,11 @@ class ReactionsController < ApplicationController
   before_action :set_client, only: %i[index create]
 
   def index
-    @client.list_reactions(formatted_channel, ts)
+    render json: @client.list_reactions(formatted_channel, ts)
   end
 
   def create
-    @client.add_reactions(
+    render json: @client.add_reactions(
       formatted_channel,
       reaction,
       ts

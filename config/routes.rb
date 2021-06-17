@@ -3,17 +3,13 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'application#index'
-  resources :channel_messages, only: %i[create update],
-                               defaults: { format: :json }
-  resources :direct_messages, only: :create, defaults: { format: :json }
-  resources :reactions, only: %i[index create], defaults: { format: :json }
-  resources :users, only: :index, defaults: { format: :json }
+  resources :channel_messages, only: %i[create update]
+  resources :direct_messages, only: :create
+  resources :reactions, only: %i[index create]
+  resources :users, only: :index
 
-  post '/channel-messages', to: 'channel_messages#create',
-                            defaults: { format: :json }
-  patch '/channel-messages', to: 'channel_messages#update',
-                             defaults: { format: :json }
+  post '/channel-messages', to: 'channel_messages#create'
+  patch '/channel-messages', to: 'channel_messages#update'
 
-  post '/direct-messages', to: 'direct_messages#create',
-                           defaults: { format: :json }
+  post '/direct-messages', to: 'direct_messages#create'
 end
