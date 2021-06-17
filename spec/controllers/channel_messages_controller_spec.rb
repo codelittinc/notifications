@@ -5,11 +5,7 @@ require 'rails_helper'
 RSpec.describe ChannelMessagesController, type: :controller do
   describe '#create' do
     it 'creates a message' do
-      json = {
-        channel: 'general',
-        message: 'Hello World',
-        ts: '123'
-      }
+      json = { channel: 'general', message: 'Hello World', ts: '123' }
 
       expect_any_instance_of(Clients::SlackClient)
         .to receive(:create_channel_message!)
@@ -22,9 +18,10 @@ RSpec.describe ChannelMessagesController, type: :controller do
   describe '#update' do
     it 'updates a message' do
       json = {
+        id: '123456',
         channel: 'general',
         message: 'I am updating',
-        id: '123'
+        ts: '123'
       }
 
       expect_any_instance_of(Clients::SlackClient).to receive(:update_message!)

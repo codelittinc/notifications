@@ -3,6 +3,6 @@
 class UsersController < ApplicationController
   def index
     client = Clients::SlackClient.new
-    client.list_users
+    render json: client.list_users
   end
 end

@@ -32,7 +32,7 @@ module Clients
       client.chat_update(
         channel: channel,
         text: text,
-        timestamp: timestamp,
+        ts: timestamp,
         link_names: link_names
       )
     end
@@ -48,21 +48,21 @@ module Clients
     def clean_reactions!(formatted_channel, timestamp)
       reactions = list_reactions(formatted_channel, timestamp)
       reactions&.each do |reaction|
-        remove_reaction!(reaction['name'])
+        remove_reaction!(reaction['name'], formatted_channel, timestamp)
       end
     end
 
-    def remove_reaction!(name)
+    def remove_reaction!(name, formatted_channel, timestamp)
       client.reactions_remove(
         name: name,
-        timestamp: ts,
+        timestamp: timestamp,
         channel: formatted_channel
       )
     end
 
     def add_reactions(formatted_channel, reaction, timestamp)
       # @TODO: remove this cleaning from this method
-      client.clean_reactions!(formatted_channel, ts)
+      clean_reactions!(formatted_channel, timestamp)
 
       client.reactions_add(
         channel: formatted_channel,
