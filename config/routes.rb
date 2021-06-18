@@ -12,4 +12,8 @@ Rails.application.routes.draw do
   patch '/channel-messages', to: 'channel_messages#update'
 
   post '/direct-messages', to: 'direct_messages#create'
+
+  namespace :oauth do
+    get '/slack', to: 'slack#create'
+  end
 end

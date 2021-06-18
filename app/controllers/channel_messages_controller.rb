@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
 class ChannelMessagesController < ApplicationController
-  before_action :set_client, only: %i[create update]
-
   def create
     MessageCreator.new('create', 'channel', message, formatted_channel).create!
 
-    render json: @client.create_channel_message!(formatted_channel, message,
-                                                 timestamp, true)
+    render json: client.create_channel_message!(formatted_channel, message,
+                                                timestamp, true)
   end
 
   def update
     MessageCreator.new('update', 'channel', message, formatted_channel).create!
 
-    render json: @client.update_message!(formatted_channel, message, timestamp,
-                                         true)
+    render json: client.update_message!(formatted_channel, message, timestamp,
+                                        true)
   end
 
   private
@@ -29,9 +27,5 @@ class ChannelMessagesController < ApplicationController
 
   def message
     params[:message]
-  end
-
-  def set_client
-    @client = Clients::SlackClient.new
   end
 end
