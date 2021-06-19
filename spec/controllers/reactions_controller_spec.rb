@@ -12,23 +12,6 @@ RSpec.describe ReactionsController, type: :controller do
     ).application_key
   end
 
-  describe '#index' do
-    it 'list the reactions' do
-      json = {
-        channel: 'general',
-        ts: '123'
-      }
-
-      expect_any_instance_of(Clients::Slack::Client)
-        .to receive(:list_reactions)
-        .with('#general', '123')
-
-      request.headers['Authorization'] = authorization
-
-      get :index, params: json
-    end
-  end
-
   describe '#create' do
     it 'creates a reaction' do
       json = {

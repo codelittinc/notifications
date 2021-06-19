@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChannelMessagesController < ApplicationController
+  before_action :authenticate
+
   def create
     MessageCreator.new('create', 'channel', message, formatted_channel).create!
 
