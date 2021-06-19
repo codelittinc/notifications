@@ -12,9 +12,7 @@ class ApplicationController < ActionController::API
   def client
     return unless authorization_key
 
-    provider_credentials = ProviderCredential.find_by(
-      application_key: authorization_key
-    )
-    @client = Clients::Slack::Client.new(provider_credentials)
+    credentials = ProviderCredential.find_by(application_key: authorization_key)
+    @client = Clients::Slack::Client.new(credentials)
   end
 end

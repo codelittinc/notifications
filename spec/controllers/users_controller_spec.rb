@@ -4,8 +4,12 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   let(:authorization) do
-    ProviderCredential.create(access_key: '123', access_id: '123',
-                              application_key: '12345').application_key
+    ProviderCredential.create(
+      access_key: '123',
+      team_id: '123',
+      team_name: 'codelitt',
+      application_key: '12345'
+    ).application_key
   end
 
   let(:headers) do
