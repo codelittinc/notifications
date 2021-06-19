@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DirectMessagesController < ApplicationController
+  before_action :authenticate
+
   def create
     MessageCreator.new('create', 'direct', message, formatted_username).create!
 

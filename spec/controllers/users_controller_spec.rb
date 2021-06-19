@@ -12,10 +12,6 @@ RSpec.describe UsersController, type: :controller do
     ).application_key
   end
 
-  let(:headers) do
-    { Authorization: authorization, bata: 1 }
-  end
-
   describe '#index' do
     it 'list the users' do
       expect_any_instance_of(Clients::Slack::Client)

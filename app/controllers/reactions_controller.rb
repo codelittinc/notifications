@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class ReactionsController < ApplicationController
-  def index
-    render json: client.list_reactions(formatted_channel, ts)
-  end
+  before_action :authenticate
 
   def create
     render json: client.add_reactions(
