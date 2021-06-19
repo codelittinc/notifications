@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  before_action :authenticate, except: :index
+  attr_reader :client
+
   def index
     render json: { status: 200 }
   end
 
-  def authorization_key
-    request.headers['Authorization']&.gsub('Bearer ', '')
+  def authenticate
+    credentials = ProviderCredential.find_by(application_key: authorization_key)
+
+    if credentials
+      @client = Clients::Slack::Client.new(credentials)
+    else
+      render status: :unauthorized
+    end
   end
 
-  def client
-    return unless authorization_key
-
-    credentials = ProviderCredential.find_by(application_key: authorization_key)
-    @client = Clients::Slack::Client.new(credentials)
+  def authorization_key
+    request.headers['Authorization']&.gsub('Bearer ', '')
   end
 end
