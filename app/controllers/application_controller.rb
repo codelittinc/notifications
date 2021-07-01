@@ -8,13 +8,15 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate
-    credentials = ProviderCredential.find_by(application_key: authorization_key)
-
-    if credentials
-      @client = Clients::Slack::Client.new(credentials)
+    if provider_credential
+      @client = Clients::Slack::Client.new(provider_credential)
     else
       render status: :unauthorized
     end
+  end
+
+  def provider_credential
+    @provider_credential ||= ProviderCredential.find_by(application_key: authorization_key)
   end
 
   def authorization_key

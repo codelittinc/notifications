@@ -1,15 +1,13 @@
-inherit_from: .rubocop_todo.yml
-
 require: rubocop-rails
 
 # Enable all rubocop new cops between versions
 AllCops:
   NewCops: enable
 
-# Ignore comments
-Layout/LineLength:
-  Max: 80
-  IgnoredPatterns: ['#\s']
+Metrics/BlockLength:
+ Enabled: true
+ Exclude:
+   - spec/**/*
 
 Style/Documentation:
  Enabled: false

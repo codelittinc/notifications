@@ -4,7 +4,8 @@ class DirectMessagesController < ApplicationController
   before_action :authenticate
 
   def create
-    MessageCreator.new('create', 'direct', message, formatted_username).create!
+    MessageCreator.new(provider_credential, 'create', 'direct', message,
+                       formatted_username).create!
 
     render json: client.create_direct_message!(formatted_username, message)
   end
