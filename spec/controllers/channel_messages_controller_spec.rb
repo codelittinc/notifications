@@ -13,7 +13,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
   end
 
   describe '#create' do
-    it 'creates a message' do
+    it 'sends a message' do
       json = { channel: 'general', message: 'Hello World', ts: '123' }
 
       expect_any_instance_of(Clients::Slack::Client)
@@ -23,6 +23,20 @@ RSpec.describe ChannelMessagesController, type: :controller do
       request.headers['Authorization'] = authorization
 
       post :create, params: json
+    end
+
+    it 'creates a message in the database' do
+      json = { channel: 'general', message: 'Hello World', ts: '123' }
+
+      expect_any_instance_of(Clients::Slack::Client)
+        .to receive(:create_channel_message!)
+        .with('#general', 'Hello World', '123', true)
+
+      request.headers['Authorization'] = authorization
+
+      expect do
+        post :create, params: json
+      end.to change(Message, :count).by(1)
     end
   end
 
@@ -43,6 +57,26 @@ RSpec.describe ChannelMessagesController, type: :controller do
       request.headers['Authorization'] = authorization
 
       post :update, params: json
+    end
+
+    it 'creates a message in the database' do
+      json = {
+        id: '123456',
+        channel: 'general',
+        message: 'I am updating',
+        ts: '123'
+      }
+
+      expect_any_instance_of(
+        Clients::Slack::Client
+      ).to receive(:update_message!)
+        .with('#general', 'I am updating', '123', true)
+
+      request.headers['Authorization'] = authorization
+
+      expect do
+        post :update, params: json
+      end.to change(Message, :count).by(1)
     end
   end
 end
