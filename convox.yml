@@ -13,5 +13,7 @@ services:
       - LOG_ENV=
       - LOG_HOST=
       - SLACK_API_KEY
-      - ENVIRONMENT=development
+      - RAILS_ENV=development
       - SECRET_KEY_BASE=no-value
+      - ADMIN_USER=
+      - ADMIN_PASS=
