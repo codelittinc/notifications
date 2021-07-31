@@ -3,13 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe ChannelMessagesController, type: :controller do
-  let(:authorization) do
+  let(:provider) do
     ProviderCredential.create(
       access_key: '123',
       team_id: '123',
       team_name: 'codelitt',
       application_key: '12345'
-    ).application_key
+    )
+  end
+
+  let(:authorization) do
+    provider.application_key
   end
 
   describe '#create' do
@@ -33,6 +37,40 @@ RSpec.describe ChannelMessagesController, type: :controller do
         .with('#general', 'Hello World', '123')
 
       request.headers['Authorization'] = authorization
+
+      expect do
+        post :create, params: json
+      end.to change(Message, :count).by(1)
+    end
+
+    it 'does not duplicate a message when it receives the uniq param' do
+      json = { channel: 'general', message: 'Hello World', ts: '123', uniq: true }
+
+      expect_any_instance_of(Clients::Slack::Channel)
+        .not_to receive(:send!)
+        .with('#general', 'Hello World', '123')
+
+      request.headers['Authorization'] = authorization
+
+      Message.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
+                     action: 'create')
+
+      expect do
+        post :create, params: json
+      end.to change(Message, :count).by(0)
+    end
+
+    it 'duplicates a message when uniq param is not sent or is false' do
+      json = { channel: 'general', message: 'Hello World', ts: '123' }
+
+      expect_any_instance_of(Clients::Slack::Channel)
+        .to receive(:send!)
+        .with('#general', 'Hello World', '123')
+
+      request.headers['Authorization'] = authorization
+
+      Message.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
+                     action: 'create')
 
       expect do
         post :create, params: json
