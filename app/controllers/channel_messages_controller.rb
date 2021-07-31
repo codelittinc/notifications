@@ -2,32 +2,27 @@
 
 class ChannelMessagesController < ApplicationController
   before_action :authenticate
+  before_action :set_notification_request!
 
   def create
-    MessageCreator.call(provider_credential, 'create', 'channel', message,
-                        formatted_channel)
-
-    render json: client.create_channel_message!(formatted_channel, message, timestamp)
+    render json: MessageSender.call(@request)
   end
 
   def update
-    MessageCreator.call(provider_credential, 'update', 'channel', message,
-                        formatted_channel)
-
-    render json: client.update_message!(formatted_channel, message, timestamp)
+    render json: MessageSender.call(@request)
   end
 
   private
 
-  def formatted_channel
+  def target_type
+    'channel'
+  end
+
+  def target
     "\##{params[:channel]}"
   end
 
-  def timestamp
-    params[:ts]
-  end
-
-  def message
+  def content
     params[:message]
   end
 end

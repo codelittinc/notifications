@@ -19,9 +19,9 @@ RSpec.describe DirectMessagesController, type: :controller do
         message: 'Hello World'
       }
 
-      expect_any_instance_of(Clients::Slack::Client)
-        .to receive(:create_direct_message!)
-        .with('@vinicius', 'Hello World')
+      expect_any_instance_of(Clients::Slack::Direct)
+        .to receive(:send!)
+        .with('@vinicius', 'Hello World', nil)
 
       request.headers['Authorization'] = authorization
 

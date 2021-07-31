@@ -2,21 +2,23 @@
 
 class DirectMessagesController < ApplicationController
   before_action :authenticate
+  before_action :set_notification_request!
 
   def create
-    MessageCreator.call(provider_credential, 'create', 'direct', message,
-                        formatted_username)
-
-    render json: client.create_direct_message!(formatted_username, message)
+    render json: MessageSender.call(@request)
   end
 
   private
 
-  def formatted_username
+  def target_type
+    'direct'
+  end
+
+  def target
     "@#{params[:username]}"
   end
 
-  def message
+  def content
     params[:message]
   end
 end

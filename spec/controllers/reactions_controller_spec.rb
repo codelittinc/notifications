@@ -20,8 +20,8 @@ RSpec.describe ReactionsController, type: :controller do
         ts: '123'
       }
 
-      expect_any_instance_of(Clients::Slack::Client)
-        .to receive(:add_reactions)
+      expect_any_instance_of(Clients::Slack::Reaction)
+        .to receive(:send!)
         .with('#general', ':white_check_mark:', '123')
 
       request.headers['Authorization'] = authorization
