@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-class MessageCreator
+class MessageCreator < ApplicationService
   def initialize(provider, action, target_type, message, channel)
+    super()
     @action = action
     @target_type = target_type
     @text = message
@@ -9,7 +10,7 @@ class MessageCreator
     @provider = provider
   end
 
-  def create!
+  def call
     Message.create(
       text: @text,
       target_type: @target_type,
