@@ -30,7 +30,8 @@ class ApplicationController < ActionController::API
       target_type: target_type,
       action: params[:action],
       content: content,
-      target_identifier: params[:ts]
+      target_identifier: params[:ts],
+      uniq: params[:uniq]
     )
     @request.save
     @request

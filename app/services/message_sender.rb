@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class MessageSender < ApplicationService
-  delegate :provider_credential, :action, :target_type, :content, :target, :target_identifier, to: :notification_request
+  delegate :provider_credential, :action, :target_type, :content, :target, :target_identifier, :uniq,
+           to: :notification_request
   attr_reader :notification_request
 
   def initialize(notification_request)
@@ -10,7 +11,8 @@ class MessageSender < ApplicationService
   end
 
   def call
-    create_message!
+    return unless create_message!
+
     class_const = Object.const_get("Clients::Slack::#{target_type.capitalize}")
     client = class_const.new(provider_credential)
 
@@ -30,7 +32,8 @@ class MessageSender < ApplicationService
       action,
       target_type,
       content,
-      target
+      target,
+      uniq
     )
   end
 end
