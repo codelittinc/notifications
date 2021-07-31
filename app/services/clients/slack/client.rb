@@ -11,12 +11,12 @@ module Clients
         end
       end
 
-      def create_channel_message!(channel, text, thread_ts, link_names)
+      def create_channel_message!(channel, text, thread_ts)
         client.chat_postMessage(
           channel: channel,
           text: text,
           thread_ts: thread_ts,
-          link_names: link_names
+          link_names: true
         )
       end
 
@@ -27,12 +27,12 @@ module Clients
         )
       end
 
-      def update_message!(channel, text, timestamp, link_names)
+      def update_message!(channel, text, timestamp)
         client.chat_update(
           channel: channel,
           text: text,
           ts: timestamp,
-          link_names: link_names
+          link_names: true
         )
       end
 
