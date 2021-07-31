@@ -2,26 +2,23 @@
 
 class ReactionsController < ApplicationController
   before_action :authenticate
+  before_action :set_notification_request!
 
   def create
-    render json: client.add_reactions(
-      formatted_channel,
-      reaction,
-      ts
-    )
+    render json: MessageSender.call(@request)
   end
 
   private
 
-  def reaction
+  def content
     params[:reaction]
   end
 
-  def formatted_channel
-    "\##{params[:channel]}"
+  def target_type
+    'reaction'
   end
 
-  def ts
-    params[:ts]
+  def target
+    "\##{params[:channel]}"
   end
 end

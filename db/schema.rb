@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_01_205937) do
+ActiveRecord::Schema.define(version: 2021_07_31_111923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(version: 2021_07_01_205937) do
     t.index ["provider_credential_id"], name: "index_messages_on_provider_credential_id"
   end
 
+  create_table "notification_requests", force: :cascade do |t|
+    t.boolean "fulfilled"
+    t.boolean "uniq"
+    t.string "target"
+    t.string "target_type"
+    t.string "content"
+    t.string "action"
+    t.string "target_identifier"
+    t.bigint "provider_credential_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["provider_credential_id"], name: "index_notification_requests_on_provider_credential_id"
+  end
+
   create_table "provider_credentials", force: :cascade do |t|
     t.string "access_key"
     t.string "team_id"
@@ -36,4 +50,5 @@ ActiveRecord::Schema.define(version: 2021_07_01_205937) do
   end
 
   add_foreign_key "messages", "provider_credentials"
+  add_foreign_key "notification_requests", "provider_credentials"
 end

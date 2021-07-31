@@ -22,4 +22,17 @@ class ApplicationController < ActionController::API
   def authorization_key
     request.headers['Authorization']&.gsub('Bearer ', '')
   end
+
+  def set_notification_request!
+    @request = NotificationRequest.new(
+      provider_credential: provider_credential,
+      target: target,
+      target_type: target_type,
+      action: params[:action],
+      content: content,
+      target_identifier: params[:ts]
+    )
+    @request.save
+    @request
+  end
 end
