@@ -31,7 +31,8 @@ class ApplicationController < ActionController::API
       action: params[:action],
       content: content,
       target_identifier: params[:ts],
-      uniq: params[:uniq]
+      uniq: params[:uniq],
+      json: params
     )
     @request.save
     @request

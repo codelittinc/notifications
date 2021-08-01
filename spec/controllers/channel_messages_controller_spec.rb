@@ -63,6 +63,24 @@ RSpec.describe ChannelMessagesController, type: :controller do
       expect(Message.last.target_identifier).to eql('123')
     end
 
+    it 'saves the json in the notification request' do
+      json = { channel: 'general', message: 'Hello World', ts: '123' }
+
+      expect_any_instance_of(Clients::Slack::Channel)
+        .to receive(:send!)
+        .with('#general', 'Hello World', '123').and_return({
+                                                             'ts' => '123'
+                                                           })
+
+      request.headers['Authorization'] = authorization
+
+      post :create, params: json
+
+      expect(NotificationRequest.last.json).to eql(
+        '{"channel"=>"general", "message"=>"Hello World", "ts"=>"123", "controller"=>"channel_messages", "action"=>"create"}'
+      )
+    end
+
     it 'creates a message in the database' do
       json = { channel: 'general', message: 'Hello World', ts: '123' }
 
