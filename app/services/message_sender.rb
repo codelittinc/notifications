@@ -11,17 +11,11 @@ class MessageSender < ApplicationService
   end
 
   def call
-    return unless create_message!
+    message = create_message!
+    return unless message
 
-    class_const = Object.const_get("Clients::Slack::#{target_type.capitalize}")
-    client = class_const.new(provider_credential)
-
-    case action
-    when 'create'
-      response = client.send!(target, content, target_identifier)
-    when 'update'
-      response = client.update!(target, content, target_identifier)
-    end
+    response = execute_message!
+    message.update(target_identifier: response['ts'])
 
     @notification_request.update(fulfilled: true)
     response
@@ -38,5 +32,17 @@ class MessageSender < ApplicationService
       target,
       uniq
     )
+  end
+
+  def execute_message!
+    class_const = Object.const_get("Clients::Slack::#{target_type.capitalize}")
+    client = class_const.new(provider_credential)
+
+    case action
+    when 'create'
+      client.send!(target, content, target_identifier)
+    when 'update'
+      client.update!(target, content, target_identifier)
+    end
   end
 end
