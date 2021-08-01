@@ -29,6 +29,22 @@ RSpec.describe ChannelMessagesController, type: :controller do
       post :create, params: json
     end
 
+    it 'returns the slack response' do
+      json = { channel: 'general', message: 'Hello World', ts: '123' }
+
+      expect_any_instance_of(Clients::Slack::Channel)
+        .to receive(:send!)
+        .with('#general', 'Hello World', '123').and_return({
+                                                             'ts' => '123'
+                                                           })
+
+      request.headers['Authorization'] = authorization
+
+      post :create, params: json
+
+      expect(JSON.parse(response.body)['ts']).to eql('123')
+    end
+
     it 'creates a message in the database' do
       json = { channel: 'general', message: 'Hello World', ts: '123' }
 
