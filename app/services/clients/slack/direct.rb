@@ -9,7 +9,6 @@ module Clients
         client.chat_postMessage(
           channel: channel,
           text: text,
-          ts: identifier,
           thread_ts: thread_ts
         )
       end
