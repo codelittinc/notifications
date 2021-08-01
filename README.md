@@ -1,4 +1,4 @@
-![CI](https://github.com/codelittinc/rails-api-base-project/workflows/CI/badge.svg)
+![CI](https://github.com/codelittinc/rails-api-base-project/workflows/CI/badge.svg)asd
 
 ## Getting started
 
