@@ -18,10 +18,13 @@ class MessageSender < ApplicationService
 
     case action
     when 'create'
-      client.send!(target, content, target_identifier)
+      response = client.send!(target, content, target_identifier)
     when 'update'
-      client.update!(target, content, target_identifier)
+      response = client.update!(target, content, target_identifier)
     end
+
+    @notification_request.update(fulfilled: true)
+    response
   end
 
   private
