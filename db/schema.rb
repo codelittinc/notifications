@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_111923) do
+ActiveRecord::Schema.define(version: 2021_08_01_141017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2021_07_31_111923) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "provider_credential_id"
+    t.string "target_identifier"
     t.index ["provider_credential_id"], name: "index_messages_on_provider_credential_id"
   end
 

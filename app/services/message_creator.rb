@@ -12,7 +12,7 @@ class MessageCreator < ApplicationService
   end
 
   def call
-    return false if @uniq && Message.exists?(text: @text, target: @target, provider_credential: @provider)
+    return nil if @uniq && Message.exists?(text: @text, target: @target, provider_credential: @provider)
 
     Message.create(
       text: @text,

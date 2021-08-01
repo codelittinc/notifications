@@ -21,7 +21,9 @@ RSpec.describe DirectMessagesController, type: :controller do
 
       expect_any_instance_of(Clients::Slack::Direct)
         .to receive(:send!)
-        .with('@vinicius', 'Hello World', nil)
+        .with('@vinicius', 'Hello World', nil).and_return({
+                                                            'ts' => '123'
+                                                          })
 
       request.headers['Authorization'] = authorization
 
