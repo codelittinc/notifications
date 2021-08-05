@@ -6,7 +6,7 @@ services:
   notifications-api:
     build: .
     port: 3000
-    domain: ${HOST}
+    domain: api.notifications.codelitt.dev,slack-api.codelitt.dev
     resources:
       - database
     environment:
