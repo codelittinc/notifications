@@ -1,7 +1,5 @@
 ![CI](https://github.com/codelittinc/rails-api-base-project/workflows/CI/badge.svg)
 
-![Deploy to Heroku](https://github.com/codelittinc/slack-notifications/workflows/Deploy%20to%20Heroku/badge.svg)
-
 Notifications API
 =================
 
