@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_01_144110) do
+ActiveRecord::Schema.define(version: 2021_09_01_190501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2021_08_01_144110) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "provider_credential_id"
     t.string "target_identifier"
+    t.bigint "notification_request_id"
+    t.index ["notification_request_id"], name: "index_messages_on_notification_request_id"
     t.index ["provider_credential_id"], name: "index_messages_on_provider_credential_id"
   end
 
@@ -51,6 +53,7 @@ ActiveRecord::Schema.define(version: 2021_08_01_144110) do
     t.string "team_name"
   end
 
+  add_foreign_key "messages", "notification_requests"
   add_foreign_key "messages", "provider_credentials"
   add_foreign_key "notification_requests", "provider_credentials"
 end

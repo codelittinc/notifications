@@ -3,5 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe NotificationRequest, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it { should have_one(:message) }
+
+    it { should belong_to(:provider_credential) }
+  end
 end

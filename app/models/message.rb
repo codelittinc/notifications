@@ -2,6 +2,7 @@
 
 class Message < ApplicationRecord
   belongs_to :provider_credential
+  belongs_to :notification_request, optional: true
 
   validates :text, presence: true
   validates :target_type, presence: true, inclusion: { in: %w[direct channel] }
