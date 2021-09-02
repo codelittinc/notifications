@@ -17,7 +17,8 @@ The goal of this application is to create a simple way to send message notificat
 
 #### Setting up the project
 1. git clone git@github.com:codelittinc/notifications.git
-2. inside the project folder run `sh bin/dev`
+2. run: cp .env.example .env
+3. inside the project folder run `sh bin/dev`
 
 You are now in the docker console
 
