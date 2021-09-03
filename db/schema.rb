@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_01_190501) do
+ActiveRecord::Schema.define(version: 2021_09_03_200941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2021_09_01_190501) do
   create_table "notification_requests", force: :cascade do |t|
     t.boolean "fulfilled"
     t.boolean "uniq"
-    t.string "target"
+    t.string "target_name"
     t.string "target_type"
     t.string "content"
     t.string "action"

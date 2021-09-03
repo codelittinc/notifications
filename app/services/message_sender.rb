@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MessageSender < ApplicationService
-  delegate :provider_credential, :action, :target_type, :content, :target, :target_identifier, :uniq,
+  delegate :provider_credential, :action, :target_type, :content, :target_name, :target_identifier, :uniq,
            to: :notification_request
   attr_reader :notification_request
 
@@ -24,11 +24,13 @@ class MessageSender < ApplicationService
   private
 
   def create_message!
+    target = { name: target_name, type: target_type }
+
     MessageCreator.call(
-      provider_credential,
       action,
-      target_type,
       content,
+      notification_request,
+      provider_credential,
       target,
       uniq
     )
@@ -40,9 +42,9 @@ class MessageSender < ApplicationService
 
     case action
     when 'create'
-      client.send!(target, content, target_identifier)
+      client.send!(target_name, content, target_identifier)
     when 'update'
-      client.update!(target, content, target_identifier)
+      client.update!(target_name, content, target_identifier)
     end
   end
 end

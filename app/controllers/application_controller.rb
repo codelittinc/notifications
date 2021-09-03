@@ -26,7 +26,7 @@ class ApplicationController < ActionController::API
   def set_notification_request!
     @request = NotificationRequest.new(
       provider_credential: provider_credential,
-      target: target,
+      target_name: target,
       target_type: target_type,
       action: params[:action],
       content: content,
