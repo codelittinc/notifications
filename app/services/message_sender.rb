@@ -18,7 +18,8 @@ class MessageSender < ApplicationService
     message.update(target_identifier: response['ts'])
 
     @notification_request.update(fulfilled: true)
-    response
+
+    { ts: @notification_request.id }
   end
 
   private
