@@ -31,7 +31,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
       post :create, params: json
     end
 
-    it 'returns the slack response' do
+    it 'returns the id of the NotificationRequest' do
       json = { channel: 'general', message: 'Hello World', ts: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
@@ -40,11 +40,32 @@ RSpec.describe ChannelMessagesController, type: :controller do
                                                              'ts' => '123'
                                                            })
 
+      provider_credential = ProviderCredential.new(access_key: '123', team_id: '123', team_name: '123',
+                                                   application_key: '123')
+      provider_credential.save!
+
+      notification_request = NotificationRequest.new(
+        provider_credential: provider_credential,
+        target_name: '#general',
+        target_type: 'channel',
+        action: 'create',
+        content: 'Hello World',
+        target_identifier: '123',
+        uniq: false,
+        json: json
+      )
+
+      notification_request.save!
+
+      expect_any_instance_of(ChannelMessagesController)
+        .to receive(:notification_request)
+        .and_return(notification_request)
+
       request.headers['Authorization'] = authorization
 
       post :create, params: json
 
-      expect(JSON.parse(response.body)['ts']).to eql('123')
+      expect(JSON.parse(response.body)['ts']).to eql(notification_request.id.to_s)
     end
 
     it 'creates a message with a notification request' do
