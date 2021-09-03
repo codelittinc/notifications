@@ -1,25 +1,27 @@
 # frozen_string_literal: true
 
 class MessageCreator < ApplicationService
-  def initialize(provider, action, target_type, message, target, uniq)
+  def initialize(action, message, notification_request, provider, target_data, uniq)
     super()
     @action = action
-    @target_type = target_type
-    @text = message
-    @target = target
+    @notification_request = notification_request
     @provider = provider
+    @target_name = target_data[:name]
+    @target_type = target_data[:type]
+    @text = message
     @uniq = uniq
   end
 
   def call
-    return nil if @uniq && Message.exists?(text: @text, target: @target, provider_credential: @provider)
+    return nil if @uniq && Message.exists?(text: @text, target: @target_name, provider_credential: @provider)
 
     Message.create(
-      text: @text,
-      target_type: @target_type,
       action: @action,
-      target: @target,
-      provider_credential: @provider
+      notification_request: @notification_request,
+      provider_credential: @provider,
+      target: @target_name,
+      target_type: @target_type,
+      text: @text
     )
   end
 end
