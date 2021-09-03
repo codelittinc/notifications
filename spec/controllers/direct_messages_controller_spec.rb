@@ -29,5 +29,24 @@ RSpec.describe DirectMessagesController, type: :controller do
 
       post :create, params: json
     end
+
+    it 'creates a message with a notification request' do
+      json = {
+        username: 'vinicius',
+        message: 'Hello World'
+      }
+
+      expect_any_instance_of(Clients::Slack::Direct)
+        .to receive(:send!)
+        .with('@vinicius', 'Hello World', nil).and_return({
+                                                            'ts' => '123'
+                                                          })
+
+      request.headers['Authorization'] = authorization
+
+      post :create, params: json
+
+      expect(Message.last.notification_request).to eql(NotificationRequest.last)
+    end
   end
 end
