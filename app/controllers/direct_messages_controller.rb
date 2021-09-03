@@ -2,10 +2,9 @@
 
 class DirectMessagesController < ApplicationController
   before_action :authenticate
-  before_action :set_notification_request!
 
   def create
-    render json: MessageSender.call(@request)
+    render json: MessageSender.call(notification_request)
   end
 
   private

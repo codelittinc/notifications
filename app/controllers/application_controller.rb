@@ -23,8 +23,8 @@ class ApplicationController < ActionController::API
     request.headers['Authorization']&.gsub('Bearer ', '')
   end
 
-  def set_notification_request!
-    @request = NotificationRequest.new(
+  def create_notification_request!
+    notification = NotificationRequest.new(
       provider_credential: provider_credential,
       target_name: target,
       target_type: target_type,
@@ -34,7 +34,11 @@ class ApplicationController < ActionController::API
       uniq: params[:uniq],
       json: params
     )
-    @request.save
-    @request
+    notification.save
+    notification
+  end
+
+  def notification_request
+    @notification_request ||= create_notification_request!
   end
 end
