@@ -19,7 +19,7 @@ class MessageSender < ApplicationService
 
     @notification_request.update(fulfilled: true)
 
-    { ts: @notification_request.id.to_s }
+    { notification_id: @notification_request.id.to_s }
   end
 
   private

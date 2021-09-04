@@ -65,7 +65,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       post :create, params: json
 
-      expect(JSON.parse(response.body)['ts']).to eql(notification_request.id.to_s)
+      expect(JSON.parse(response.body)['notification_id']).to eql(notification_request.id.to_s)
     end
 
     it 'creates a message with a notification request' do
