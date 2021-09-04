@@ -18,7 +18,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
   describe '#create' do
     it 'sends a message' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -32,7 +32,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
     end
 
     it 'returns the id of the NotificationRequest' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -69,7 +69,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
     end
 
     it 'creates a message with a notification request' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -85,7 +85,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
     end
 
     it 'saves the target identifier in the message' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -101,7 +101,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
     end
 
     it 'saves the json in the notification request' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -114,12 +114,13 @@ RSpec.describe ChannelMessagesController, type: :controller do
       post :create, params: json
 
       expect(NotificationRequest.last.json).to eql(
-        '{"channel"=>"general", "message"=>"Hello World", "ts"=>"123", "controller"=>"channel_messages", "action"=>"create"}'
+        '{"channel"=>"general", "message"=>"Hello World", "notification_id"=>"123",'\
+        ' "controller"=>"channel_messages", "action"=>"create"}'
       )
     end
 
     it 'creates a message in the database' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -135,7 +136,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
     end
 
     it 'does not duplicate a message when it receives the uniq param' do
-      json = { channel: 'general', message: 'Hello World', ts: '123', uniq: true }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123', uniq: true }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .not_to receive(:send!)
@@ -154,7 +155,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
     end
 
     it 'duplicates a message when uniq param is not sent or is false' do
-      json = { channel: 'general', message: 'Hello World', ts: '123' }
+      json = { channel: 'general', message: 'Hello World', notification_id: '123' }
 
       expect_any_instance_of(Clients::Slack::Channel)
         .to receive(:send!)
@@ -179,7 +180,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
         id: '123456',
         channel: 'general',
         message: 'I am updating',
-        ts: '123'
+        notification_id: '123'
       }
 
       expect_any_instance_of(
@@ -194,12 +195,44 @@ RSpec.describe ChannelMessagesController, type: :controller do
       post :update, params: json
     end
 
+    it 'finds the notification request in the database and use it to get the target_identifier' do
+      notification_request = NotificationRequest.new(
+        provider_credential: provider,
+        target_name: '#general',
+        target_type: 'channel',
+        action: 'create',
+        content: 'Hello World',
+        target_identifier: 'batman.gothan',
+        uniq: false,
+        json: ''
+      )
+      notification_request.save!
+
+      json = {
+        id: '123456',
+        channel: 'general',
+        message: 'I am updating',
+        notification_id: notification_request.id
+      }
+
+      expect_any_instance_of(
+        Clients::Slack::Channel
+      ).to receive(:update!)
+        .with('#general', 'I am updating', notification_request.target_identifier).and_return({
+                                                                                                'ts' => '123'
+                                                                                              })
+
+      request.headers['Authorization'] = authorization
+
+      post :update, params: json
+    end
+
     it 'creates a message in the database' do
       json = {
         id: '123456',
         channel: 'general',
         message: 'I am updating',
-        ts: '123'
+        notification_id: '123'
       }
 
       expect_any_instance_of(
