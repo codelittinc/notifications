@@ -47,7 +47,7 @@ class ApplicationController < ActionController::API
     return nil unless notification_id
 
     notification_target = NotificationRequest.find_by(id: notification_id)
-    return notification_target.target_identifier if notification_target.present?
+    return notification_target.message.target_identifier if notification_target.present?
 
     notification_id
   end

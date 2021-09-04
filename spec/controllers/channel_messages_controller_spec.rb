@@ -202,11 +202,14 @@ RSpec.describe ChannelMessagesController, type: :controller do
         target_type: 'channel',
         action: 'create',
         content: 'Hello World',
-        target_identifier: 'batman.gothan',
         uniq: false,
         json: ''
       )
       notification_request.save!
+      message = Message.new(text: 'Hello World', target_type: 'channel', action: 'update', target: '#general',
+                            target_identifier: 'batman.gothan', notification_request: notification_request,
+                            provider_credential: provider)
+      message.save!
 
       json = {
         id: '123456',
@@ -218,9 +221,9 @@ RSpec.describe ChannelMessagesController, type: :controller do
       expect_any_instance_of(
         Clients::Slack::Channel
       ).to receive(:update!)
-        .with('#general', 'I am updating', notification_request.target_identifier).and_return({
-                                                                                                'ts' => '123'
-                                                                                              })
+        .with('#general', 'I am updating', notification_request.message.target_identifier).and_return({
+                                                                                                        'ts' => '123'
+                                                                                                      })
 
       request.headers['Authorization'] = authorization
 
