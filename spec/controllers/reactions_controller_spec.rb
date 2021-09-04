@@ -17,7 +17,7 @@ RSpec.describe ReactionsController, type: :controller do
       json = {
         channel: 'general',
         reaction: ':white_check_mark:',
-        ts: '123'
+        notification_id: '123'
       }
 
       expect_any_instance_of(Clients::Slack::Reaction)

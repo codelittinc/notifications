@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
       target_type: target_type,
       action: params[:action],
       content: content,
-      target_identifier: params[:ts],
+      target_identifier: target_identifier,
       uniq: params[:uniq],
       json: params
     )
@@ -40,5 +40,15 @@ class ApplicationController < ActionController::API
 
   def notification_request
     @notification_request ||= create_notification_request!
+  end
+
+  def target_identifier
+    notification_id = params[:notification_id]
+    return nil unless notification_id
+
+    notification_target = NotificationRequest.find_by(id: notification_id)
+    return notification_target.target_identifier if notification_target.present?
+
+    notification_id
   end
 end
