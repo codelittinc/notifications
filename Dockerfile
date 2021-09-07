@@ -1,6 +1,6 @@
 FROM ruby:3.0.2-buster
 
-ARG RAILS_ENV
+ENV RAILS_ENV production
 RUN echo "Running Dockerfile with the environment: ${RAILS_ENV}"
 
 WORKDIR /app
