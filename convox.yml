@@ -1,6 +1,8 @@
 resources:
   database:
     type: postgres
+  redis:
+    type: redis
 
 services:
   notifications-api:
@@ -9,6 +11,7 @@ services:
     domain: api.notifications.codelitt.dev,slack-api.codelitt.dev
     resources:
       - database
+      - redis
     environment:
       - LOG_ENV=
       - LOG_HOST=
@@ -17,3 +20,8 @@ services:
       - SECRET_KEY_BASE=no-value
       - ADMIN_USER=
       - ADMIN_PASS=
+  worker:
+    build: .
+    command: bundle exec sidekiq
+    resources:
+      - redis

@@ -8,6 +8,12 @@ services:
     ports:
       - '5432:5432'
 
+  redis:
+    container_name: notifications-redis
+    image: "redis:alpine"
+    ports:
+      - '6379:6379'
+
   app:
     container_name: notifications-api
     tty: true
@@ -15,7 +21,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.development
-
 
     volumes:
       - .:/share
@@ -29,10 +34,30 @@ services:
     depends_on:
       - db
       - box
+      - redis
+      - sidekiq
 
     links:
       - db
       - box
+      - redis
+      - sidekiq
+
+  sidekiq:
+    depends_on:
+      - 'db'
+      - 'redis'
+      - box
+    links:
+      - box
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    command: bundle exec sidekiq
+    volumes:
+      - '.:/app'
+      - '/app/tmp' # don't mount tmp directory
+
 
   box:
     container_name: notifications-bundle-box
