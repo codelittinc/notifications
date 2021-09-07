@@ -25,3 +25,4 @@ services:
     command: bundle exec sidekiq
     resources:
       - redis
+      - postgres
