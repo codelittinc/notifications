@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
-class DirectMessagesController < ApplicationController
-  before_action :authenticate
-
-  def create
-    render json: MessageSender.call(notification_request)
-  end
-
+class DirectMessagesController < BaseMessageController
   private
 
   def target_type

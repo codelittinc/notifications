@@ -7,6 +7,8 @@ class ApplicationController < ActionController::API
     render json: { status: 200 }
   end
 
+  private
+
   def authenticate
     if provider_credential
       @client = Clients::Slack::Client.new(provider_credential)
@@ -21,34 +23,5 @@ class ApplicationController < ActionController::API
 
   def authorization_key
     request.headers['Authorization']&.gsub('Bearer ', '')
-  end
-
-  def create_notification_request!
-    notification = NotificationRequest.new(
-      provider_credential: provider_credential,
-      target_name: target,
-      target_type: target_type,
-      action: params[:action],
-      content: content,
-      target_identifier: target_identifier,
-      uniq: params[:uniq],
-      json: params
-    )
-    notification.save
-    notification
-  end
-
-  def notification_request
-    @notification_request ||= create_notification_request!
-  end
-
-  def target_identifier
-    notification_id = params[:notification_id]
-    return nil unless notification_id
-
-    notification_target = NotificationRequest.find_by(id: notification_id)
-    return notification_target.message.target_identifier if notification_target.present?
-
-    notification_id
   end
 end

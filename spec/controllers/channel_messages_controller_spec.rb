@@ -57,7 +57,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       notification_request.save!
 
-      expect_any_instance_of(ChannelMessagesController)
+      allow_any_instance_of(ChannelMessagesController)
         .to receive(:notification_request)
         .and_return(notification_request)
 

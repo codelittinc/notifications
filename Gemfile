@@ -11,6 +11,7 @@ gem 'rails_admin', '~> 2.0'
 gem 'gelf'
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 4.1'
+gem 'sidekiq'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 
