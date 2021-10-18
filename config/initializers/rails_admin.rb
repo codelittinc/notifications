@@ -12,7 +12,7 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.main_app_name { %w[Notifications Admin] }
+  config.main_app_name = %w[Notifications Admin]
   ### Popular gems integration
 
   ## == Devise ==
