@@ -1,0 +1,44 @@
+name: PROD DEPLOY
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+jobs:
+  deploy-convox:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: convox/action-login@v2
+      name: Convox login
+      with:
+        password: ${{ secrets.CONVOX_DEPLOY_KEY }}
+
+    - uses: convox/action-deploy@v1
+      name: Deploy to Convox
+      with:
+        rack: prod-internal
+        app: messenger
+
+    - uses: convox/action-run@v1.1.0
+      name: Run schema migrations
+      with:
+        rack: prod-internal
+        app: roadrunner
+        command: 'rails db:migrate'
+        service: 'roadrunner-api'
+
+    - uses: convox/action-run@v1.1.0
+      name: Run data migrations
+      with:
+        rack: prod-internal
+        app: roadrunner
+        command: 'rails data:migrate'
+        service: 'roadrunner-api'
+
+    - uses: codelittinc/action-roadrunner-notify-deploy@master
+      name: Notify deployment
+      with:
+        domain: api.roadrunner.codelitt.dev
+        environment: prod
