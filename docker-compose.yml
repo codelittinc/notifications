@@ -20,7 +20,7 @@ services:
     stdin_open: true
     build:
       context: .
-      dockerfile: Dockerfile.development
+      target: development
 
     volumes:
       - .:/share
@@ -52,7 +52,7 @@ services:
       - box
     build:
       context: .
-      dockerfile: Dockerfile.development
+      target: development
     command: bundle exec sidekiq
     volumes:
       - '.:/app'
