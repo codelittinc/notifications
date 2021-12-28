@@ -25,20 +25,20 @@ jobs:
       name: Run schema migrations
       with:
         rack: prod-internal
-        app: roadrunner
+        app: messenger
         command: 'rails db:migrate'
-        service: 'roadrunner-api'
+        service: 'notifications-api'
 
     - uses: convox/action-run@v1.1.0
       name: Run data migrations
       with:
         rack: prod-internal
-        app: roadrunner
+        app: messenger
         command: 'rails data:migrate'
-        service: 'roadrunner-api'
+        service: 'notifications-api'
 
-    - uses: codelittinc/action-roadrunner-notify-deploy@master
+    - uses: codelittinc/action-notifications-notify-deploy@master
       name: Notify deployment
       with:
-        domain: api.roadrunner.codelitt.dev
+        domain: api.notifications.codelitt.dev
         environment: prod
