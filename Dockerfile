@@ -1,4 +1,4 @@
-FROM ruby:3.0.2-buster as development
+FROM ruby:3.1.0-bullseye as development
 
 RUN echo "Running Dockerfile with the environment: DEVELOPMENT"
 
@@ -10,7 +10,7 @@ WORKDIR /app
 
 ADD Gemfile /app/Gemfile
 ADD Gemfile.lock /app/Gemfile.lock
-RUN bundle config set with ‘development’
+RUN bundle config set with "development"
 RUN bundle install
 
 ADD ./ /app

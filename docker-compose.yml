@@ -23,7 +23,7 @@ services:
       target: development
 
     volumes:
-      - .:/share
+      - .:/app
 
     env_file:
       - .env
