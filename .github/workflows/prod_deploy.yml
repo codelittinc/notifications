@@ -37,7 +37,7 @@ jobs:
         command: 'rails data:migrate'
         service: 'notifications-api'
 
-    - uses: codelittinc/action-notifications-notify-deploy@master
+    - uses: codelittinc/action-roadrunner-notify-deploy@master
       name: Notify deployment
       with:
         domain: api.notifications.codelitt.dev
