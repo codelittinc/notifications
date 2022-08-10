@@ -26,14 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: actions/setup-ruby@v1
-
-      - uses: actions/cache@v2
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
+          bundler-cache: true
 
       - name: Bundle install
         run: |

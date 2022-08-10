@@ -21,7 +21,7 @@ module Oauth
 
     def save_credentials!(team_id, team_name, access_key)
       credentials = ProviderCredential.find_or_initialize_by(
-        team_id: team_id
+        team_id:
       )
       credentials.team_name = team_name
       credentials.access_key = access_key

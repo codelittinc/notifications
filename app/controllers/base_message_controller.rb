@@ -18,12 +18,12 @@ class BaseMessageController < ApplicationController
 
   def create_notification_request!
     notification = NotificationRequest.new(
-      provider_credential: provider_credential,
+      provider_credential:,
       target_name: target,
-      target_type: target_type,
+      target_type:,
       action: params[:action],
-      content: content,
-      target_identifier: target_identifier,
+      content:,
+      target_identifier:,
       uniq: params[:uniq],
       json: params
     )
