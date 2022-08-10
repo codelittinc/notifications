@@ -7,9 +7,9 @@ gem 'rails', '~> 6.1.0'
 gem 'rails_admin', '~> 2.0'
 
 gem 'gelf'
-gem 'net-smtp', require: false
-gem 'net-imap', require: false
-gem 'net-pop', require: false
+gem 'net-smtp'
+gem 'net-imap'
+gem 'net-pop'
 
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 4.1'
