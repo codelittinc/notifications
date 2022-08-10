@@ -8,6 +8,8 @@ gem 'rails_admin', '~> 2.0'
 
 gem 'gelf'
 gem 'net-smtp'
+gem 'net-pop'
+
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 4.1'
 gem 'sidekiq'
