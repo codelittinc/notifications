@@ -114,8 +114,8 @@ RSpec.describe ChannelMessagesController, type: :controller do
       post :create, params: json
 
       expect(NotificationRequest.last.json).to eql(
-        '{"channel"=>"general", "message"=>"Hello World", "notification_id"=>"123",'\
-        ' "controller"=>"channel_messages", "action"=>"create"}'
+        '{"channel"=>"general", "message"=>"Hello World", "notification_id"=>"123", ' \
+        '"controller"=>"channel_messages", "action"=>"create"}'
       )
     end
 

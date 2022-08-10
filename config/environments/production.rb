@@ -84,7 +84,7 @@ Rails.application.configure do
     'logs.codelitt.dev',
     12_201,
     'WAN',
-    { host: ENV['LOG_HOST'], environment: ENV['LOG_ENV'] }
+    { host: ENV.fetch('LOG_HOST', nil), environment: ENV.fetch('LOG_ENV', nil) }
   )
 
   # Do not dump schema after migrations.
