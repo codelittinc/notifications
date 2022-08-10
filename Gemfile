@@ -7,9 +7,10 @@ gem 'rails', '~> 6.1.0'
 gem 'rails_admin', '~> 2.0'
 
 gem 'gelf'
-gem 'net-smtp', require: false
-gem 'net-imap', require: false
-gem 'net-pop', require: false
+gem 'net-smtp'
+gem 'net-imap'
+gem 'net-pop'
+gem 'faraday', '1.10.0'
 
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 4.1'
@@ -27,7 +28,7 @@ gem 'data_migrate'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
-gem 'slack-ruby-client'
+gem 'slack-ruby-client', '1.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
