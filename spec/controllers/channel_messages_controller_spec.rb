@@ -45,14 +45,14 @@ RSpec.describe ChannelMessagesController, type: :controller do
       provider_credential.save!
 
       notification_request = NotificationRequest.new(
-        provider_credential: provider_credential,
+        provider_credential:,
         target_name: '#general',
         target_type: 'channel',
         action: 'create',
         content: 'Hello World',
         target_identifier: '123',
         uniq: false,
-        json: json
+        json:
       )
 
       notification_request.save!
@@ -207,7 +207,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
       )
       notification_request.save!
       message = Message.new(text: 'Hello World', target_type: 'channel', action: 'update', target: '#general',
-                            target_identifier: 'batman.gothan', notification_request: notification_request,
+                            target_identifier: 'batman.gothan', notification_request:,
                             provider_credential: provider)
       message.save!
 

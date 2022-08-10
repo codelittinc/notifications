@@ -7,9 +7,9 @@ module Clients
     class Direct < Client
       def send!(channel, text, thread_ts = nil)
         client.chat_postMessage(
-          channel: channel,
-          text: text,
-          thread_ts: thread_ts
+          channel:,
+          text:,
+          thread_ts:
         )
       end
     end

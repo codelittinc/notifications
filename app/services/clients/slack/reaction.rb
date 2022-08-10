@@ -12,7 +12,7 @@ module Clients
         client.reactions_add(
           channel: formatted_channel,
           name: reaction,
-          timestamp: timestamp
+          timestamp:
         )
       end
 
@@ -21,7 +21,7 @@ module Clients
       def list_reactions(formatted_channel, timestamp)
         response = client.reactions_get(
           channel: formatted_channel,
-          timestamp: timestamp
+          timestamp:
         )
         response['message']['reactions']
       end
@@ -35,8 +35,8 @@ module Clients
 
       def remove_reaction!(name, formatted_channel, timestamp)
         client.reactions_remove(
-          name: name,
-          timestamp: timestamp,
+          name:,
+          timestamp:,
           channel: formatted_channel
         )
       end
