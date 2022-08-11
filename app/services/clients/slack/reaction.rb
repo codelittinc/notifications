@@ -7,6 +7,8 @@ module Clients
     class Reaction < Client
       def send!(formatted_channel, reaction, timestamp)
         # @TODO: remove this cleaning from this method
+        return unless timestamp
+
         clean_reactions!(formatted_channel, timestamp)
 
         client.reactions_add(
