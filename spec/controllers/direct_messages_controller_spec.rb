@@ -46,7 +46,7 @@ RSpec.describe DirectMessagesController, type: :controller do
 
       post :create, params: json
 
-      expect(Message.last.notification_request).to eql(NotificationRequest.last)
+      expect(Notification.last.notification_request).to eql(NotificationRequest.last)
     end
   end
 end

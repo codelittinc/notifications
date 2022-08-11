@@ -9,5 +9,5 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 provider = ProviderCredential.new(access_key: '123', team_id: '123', team_name: '123', application_key: '123')
-Message.new(provider_credential: provider, action: 'create', text: 'banana', target: 'noice',
-            target_type: 'channel').save
+Notification.new(provider_credential: provider, action: 'create', text: 'banana', target: 'noice',
+                 target_type: 'channel').save

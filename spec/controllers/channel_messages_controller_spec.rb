@@ -81,7 +81,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       post :create, params: json
 
-      expect(Message.last.notification_request).to eql(NotificationRequest.last)
+      expect(Notification.last.notification_request).to eql(NotificationRequest.last)
     end
 
     it 'saves the target identifier in the message' do
@@ -97,7 +97,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       post :create, params: json
 
-      expect(Message.last.target_identifier).to eql('123')
+      expect(Notification.last.target_identifier).to eql('123')
     end
 
     it 'saves the json in the notification request' do
@@ -132,7 +132,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       expect do
         post :create, params: json
-      end.to change(Message, :count).by(1)
+      end.to change(Notification, :count).by(1)
     end
 
     it 'does not duplicate a message when it receives the uniq param' do
@@ -140,8 +140,8 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       request.headers['Authorization'] = authorization
 
-      Message.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
-                     action: 'create')
+      Notification.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
+                          action: 'create')
 
       expect do
         post :create, params: json
@@ -159,12 +159,12 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       request.headers['Authorization'] = authorization
 
-      Message.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
-                     action: 'create')
+      Notification.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
+                          action: 'create')
 
       expect do
         post :create, params: json
-      end.to change(Message, :count).by(1)
+      end.to change(Notification, :count).by(1)
     end
   end
 
@@ -200,9 +200,9 @@ RSpec.describe ChannelMessagesController, type: :controller do
         json: ''
       )
       notification_request.save!
-      message = Message.new(text: 'Hello World', target_type: 'channel', action: 'update', target: '#general',
-                            target_identifier: 'batman.gothan', notification_request:,
-                            provider_credential: provider)
+      message = Notification.new(text: 'Hello World', target_type: 'channel', action: 'update', target: '#general',
+                                 target_identifier: 'batman.gothan', notification_request:,
+                                 provider_credential: provider)
       message.save!
 
       json = {
@@ -215,9 +215,9 @@ RSpec.describe ChannelMessagesController, type: :controller do
       expect_any_instance_of(
         Clients::Slack::Channel
       ).to receive(:update!)
-        .with('#general', 'I am updating', notification_request.message.target_identifier).and_return({
-                                                                                                        'ts' => '123'
-                                                                                                      })
+        .with('#general', 'I am updating', notification_request.notification.target_identifier).and_return({
+                                                                                                             'ts' => '123'
+                                                                                                           })
 
       request.headers['Authorization'] = authorization
 
@@ -243,7 +243,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       expect do
         post :update, params: json
-      end.to change(Message, :count).by(1)
+      end.to change(Notification, :count).by(1)
     end
 
     it 'does not create a message in the database if there is any error when sending the message to slack' do
@@ -256,7 +256,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       expect do
         post :create, params: json
-      end.to raise_error(Slack::Web::Api::Errors::InvalidAuth).and change(Message, :count).by(0)
+      end.to raise_error(Slack::Web::Api::Errors::InvalidAuth).and change(Notification, :count).by(0)
     end
 
     it 'does not try sending a message if channel is empty' do

@@ -15,7 +15,7 @@ class MessageCreator < ApplicationService
   def call
     raise('It is trying to recreate a message that should be unique.') if repeating_message_that_should_be_unique?
 
-    Message.create!(
+    Notification.create!(
       action: @action,
       notification_request: @notification_request,
       provider_credential: @provider,
@@ -26,7 +26,7 @@ class MessageCreator < ApplicationService
   end
 
   def repeating_message_that_should_be_unique?
-    @uniq && Message.exists?(text: @text,
-                             target: @target_name, provider_credential: @provider)
+    @uniq && Notification.exists?(text: @text,
+                                  target: @target_name, provider_credential: @provider)
   end
 end
