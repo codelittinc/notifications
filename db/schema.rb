@@ -10,24 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_03_200941) do
+ActiveRecord::Schema.define(version: 2022_08_11_221742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "messages", force: :cascade do |t|
-    t.string "text"
-    t.string "target_type"
-    t.string "action"
-    t.string "target"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "provider_credential_id"
-    t.string "target_identifier"
-    t.bigint "notification_request_id"
-    t.index ["notification_request_id"], name: "index_messages_on_notification_request_id"
-    t.index ["provider_credential_id"], name: "index_messages_on_provider_credential_id"
-  end
 
   create_table "notification_requests", force: :cascade do |t|
     t.boolean "fulfilled"
@@ -44,6 +30,20 @@ ActiveRecord::Schema.define(version: 2021_09_03_200941) do
     t.index ["provider_credential_id"], name: "index_notification_requests_on_provider_credential_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "text"
+    t.string "target_type"
+    t.string "action"
+    t.string "target"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "provider_credential_id"
+    t.string "target_identifier"
+    t.bigint "notification_request_id"
+    t.index ["notification_request_id"], name: "index_notifications_on_notification_request_id"
+    t.index ["provider_credential_id"], name: "index_notifications_on_provider_credential_id"
+  end
+
   create_table "provider_credentials", force: :cascade do |t|
     t.string "access_key"
     t.string "team_id"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_200941) do
     t.string "team_name"
   end
 
-  add_foreign_key "messages", "notification_requests"
-  add_foreign_key "messages", "provider_credentials"
   add_foreign_key "notification_requests", "provider_credentials"
+  add_foreign_key "notifications", "notification_requests"
+  add_foreign_key "notifications", "provider_credentials"
 end

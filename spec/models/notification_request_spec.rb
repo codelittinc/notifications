@@ -5,23 +5,23 @@
 # Table name: notification_requests
 #
 #  id                     :bigint           not null, primary key
+#  action                 :string
+#  content                :string
 #  fulfilled              :boolean
-#  uniq                   :boolean
+#  json                   :string
+#  target_identifier      :string
 #  target_name            :string
 #  target_type            :string
-#  content                :string
-#  action                 :string
-#  target_identifier      :string
-#  provider_credential_id :bigint           not null
+#  uniq                   :boolean
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  json                   :string
+#  provider_credential_id :bigint           not null
 #
 require 'rails_helper'
 
 RSpec.describe NotificationRequest, type: :model do
   describe 'validations' do
-    it { should have_one(:message) }
+    it { should have_one(:notification) }
 
     it { should belong_to(:provider_credential) }
   end

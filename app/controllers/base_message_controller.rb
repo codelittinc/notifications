@@ -39,8 +39,8 @@ class BaseMessageController < ApplicationController
     notification_id = params[:notification_id]
     return nil unless notification_id
 
-    notification_target = NotificationRequest.find_by(id: notification_id)
-    return notification_target&.message&.target_identifier if notification_target.present?
+    notification_request_target = NotificationRequest.find_by(id: notification_id)
+    return notification_request_target&.notification&.target_identifier if notification_request_target.present?
 
     notification_id
   end
