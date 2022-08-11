@@ -20,7 +20,7 @@ class Message < ApplicationRecord
   belongs_to :notification_request, optional: true
 
   validates :text, presence: true
-  validates :target_type, presence: true, inclusion: { in: %w[direct channel] }
+  validates :target_type, presence: true, inclusion: { in: %w[direct channel reaction] }
   validates :action, presence: true, inclusion: { in: %w[create update] }
   validates :target, presence: true
 end
