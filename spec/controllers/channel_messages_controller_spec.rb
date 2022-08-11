@@ -258,5 +258,21 @@ RSpec.describe ChannelMessagesController, type: :controller do
         post :create, params: json
       end.to raise_error(Slack::Web::Api::Errors::InvalidAuth).and change(Message, :count).by(0)
     end
+
+    it 'does not try sending a message if channel is empty' do
+      json = {
+        id: '123456',
+        message: 'I am updating',
+        notification_id: '123'
+      }
+
+      request.headers['Authorization'] = authorization
+
+      expect do
+        post :create, params: json
+      end.not_to raise_error
+
+      post :create, params: json
+    end
   end
 end
