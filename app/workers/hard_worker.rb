@@ -5,12 +5,6 @@ class HardWorker
 
   def perform(notification_id)
     notification_request = NotificationRequest.find_by(id: notification_id)
-    begin
-      MessageSender.call(notification_request)
-    rescue StandardError => e
-      message = [e.to_s, e.backtrace].flatten.join("\n")
-      Rails.logger.error "ERROR: #{message}"
-      raise e
-    end
+    MessageSender.call(notification_request)
   end
 end

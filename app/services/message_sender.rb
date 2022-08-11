@@ -11,13 +11,19 @@ class MessageSender < ApplicationService
   end
 
   def call
-    message = create_message!
-    return unless message
+    error = nil
+    ActiveRecord::Base.transaction do
+      message = create_message!
 
-    response = execute_message!
-    message.update(target_identifier: response['ts'])
+      response = execute_message!
+      message.update(target_identifier: response['ts'])
 
-    @notification_request.update(fulfilled: true)
+      @notification_request.update(fulfilled: true)
+    rescue StandardError => e
+      error = e
+      raise ActiveRecord::Rollback
+    end
+    raise(error) if error.present?
   end
 
   private
