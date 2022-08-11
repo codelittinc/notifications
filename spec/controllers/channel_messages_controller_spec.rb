@@ -271,8 +271,6 @@ RSpec.describe ChannelMessagesController, type: :controller do
       expect do
         post :create, params: json
       end.not_to raise_error
-
-      post :create, params: json
     end
   end
 end

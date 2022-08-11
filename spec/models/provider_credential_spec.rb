@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provider_credentials
+#
+#  id              :bigint           not null, primary key
+#  access_key      :string
+#  team_id         :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  application_key :string
+#  team_name       :string
+#
 require 'rails_helper'
 
 RSpec.describe ProviderCredential, type: :model do
