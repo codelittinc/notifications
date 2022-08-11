@@ -16,7 +16,7 @@ class MessageSender < ApplicationService
       message = create_message!
 
       response = execute_message!
-      message.update(target_identifier: response['ts'])
+      message.update(target_identifier: response['ts']) if response.present?
 
       @notification_request.update(fulfilled: true)
     rescue StandardError => e
