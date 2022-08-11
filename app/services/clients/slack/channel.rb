@@ -6,6 +6,8 @@ module Clients
   module Slack
     class Channel < Client
       def send!(channel, text, thread_ts = nil)
+        return if channel == '#'
+
         client.chat_postMessage(
           channel:,
           text:,
