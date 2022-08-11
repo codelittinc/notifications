@@ -6,11 +6,11 @@ gem 'rails', '~> 6.1.0'
 
 gem 'rails_admin', '~> 2.0'
 
+gem 'faraday', '1.10.0'
 gem 'gelf'
-gem 'net-smtp'
 gem 'net-imap'
 gem 'net-pop'
-gem 'faraday', '1.10.0'
+gem 'net-smtp'
 
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 4.1'

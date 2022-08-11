@@ -138,12 +138,6 @@ RSpec.describe ChannelMessagesController, type: :controller do
     it 'does not duplicate a message when it receives the uniq param' do
       json = { channel: 'general', message: 'Hello World', notification_id: '123', uniq: true }
 
-      expect_any_instance_of(Clients::Slack::Channel)
-        .not_to receive(:send!)
-        .with('#general', 'Hello World', '123').and_return({
-                                                             'ts' => '123'
-                                                           })
-
       request.headers['Authorization'] = authorization
 
       Message.create(text: 'Hello World', target: '#general', target_type: 'channel', provider_credential: provider,
@@ -151,7 +145,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       expect do
         post :create, params: json
-      end.to change(Message, :count).by(0)
+      end.to raise_error('It is trying to recreate a message that should be unique.')
     end
 
     it 'duplicates a message when uniq param is not sent or is false' do
@@ -250,6 +244,19 @@ RSpec.describe ChannelMessagesController, type: :controller do
       expect do
         post :update, params: json
       end.to change(Message, :count).by(1)
+    end
+
+    it 'does not create a message in the database if there is any error when sending the message to slack' do
+      json = {
+        channel: 'general',
+        message: 'I am trying to create and I am failing'
+      }
+
+      request.headers['Authorization'] = authorization
+
+      expect do
+        post :create, params: json
+      end.to raise_error(Slack::Web::Api::Errors::InvalidAuth).and change(Message, :count).by(0)
     end
   end
 end

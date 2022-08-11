@@ -13,7 +13,7 @@ class MessageCreator < ApplicationService
   end
 
   def call
-    return nil if @uniq && Message.exists?(text: @text, target: @target_name, provider_credential: @provider)
+    raise('It is trying to recreate a message that should be unique.') if repeating_message_that_should_be_unique?
 
     Message.create(
       action: @action,
@@ -23,5 +23,10 @@ class MessageCreator < ApplicationService
       target_type: @target_type,
       text: @text
     )
+  end
+
+  def repeating_message_that_should_be_unique?
+    @uniq && Message.exists?(text: @text,
+                             target: @target_name, provider_credential: @provider)
   end
 end
