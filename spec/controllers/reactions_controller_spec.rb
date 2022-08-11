@@ -17,7 +17,7 @@ RSpec.describe ReactionsController, type: :controller do
   end
 
   describe '#create' do
-    it 'creates a reaction' do
+    it 'sends a reaction' do
       json = {
         channel: 'general',
         reaction: ':white_check_mark:',
