@@ -4,6 +4,6 @@ class UsersController < ApplicationController
   before_action :authenticate
 
   def index
-    render json: client.list_users
+    render json: Clients::Slack::User.new(provider_credential).list
   end
 end

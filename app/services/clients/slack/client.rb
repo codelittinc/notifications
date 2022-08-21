@@ -11,14 +11,6 @@ module Clients
         end
       end
 
-      def list_users
-        response = client.users_list
-        members = response['members']
-        members.map do |member|
-          member['name']
-        end
-      end
-
       def client
         return @client if @client
 
