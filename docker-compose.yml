@@ -8,6 +8,9 @@ services:
     ports:
       - '5432:5432'
 
+    volumes:
+      - .:/app
+
   redis:
     container_name: notifications-redis
     image: "redis:alpine"
@@ -44,6 +47,7 @@ services:
       - sidekiq
 
   sidekiq:
+    container_name: notifications-sidekiq
     depends_on:
       - 'db'
       - 'redis'
