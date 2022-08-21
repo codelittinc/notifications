@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe Api::UsersController, type: :controller do
   let(:authorization) do
     ProviderCredential.create(
       access_key: '123',
@@ -15,7 +15,7 @@ RSpec.describe UsersController, type: :controller do
   describe '#index' do
     it 'list the users' do
       expect_any_instance_of(Clients::Slack::Client)
-        .to receive(:list_users)
+        .to receive(:list)
 
       request.headers['Authorization'] = authorization
 
