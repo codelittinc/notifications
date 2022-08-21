@@ -14,7 +14,7 @@ RSpec.describe Api::UsersController, type: :controller do
 
   describe '#index' do
     it 'list the users' do
-      expect_any_instance_of(Clients::Slack::Client)
+      expect_any_instance_of(Clients::Slack::User)
         .to receive(:list)
 
       request.headers['Authorization'] = authorization
