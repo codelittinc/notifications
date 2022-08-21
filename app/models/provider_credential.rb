@@ -13,7 +13,7 @@
 #  team_name       :string
 #
 class ProviderCredential < ApplicationRecord
-  has_many :messages, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   validates :access_key, presence: true
   validates :team_id, presence: true
