@@ -16,6 +16,11 @@ Rails.application.routes.draw do
     get '/slack', to: 'slack#create'
   end
 
+  namespace :api do
+    get '/users', to: 'users#index'
+    get '/channels', to: 'channels#index'
+  end
+
   # These below are necessary to keep backwards compatibility
   post '/channel-messages', to: 'channel_messages#create'
   patch '/channel-messages', to: 'channel_messages#update'

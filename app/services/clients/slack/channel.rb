@@ -30,6 +30,11 @@ module Clients
         )
       end
 
+      def list
+        channels = client.conversations_list(limit: 1000).channels
+        channels.map { |channel| channel.slice(:id, :name).to_h }.sort_by { |hash| hash['name'] }
+      end
+
       def join!(channel)
         client.conversations_join({
                                     channel:
