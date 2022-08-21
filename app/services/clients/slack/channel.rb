@@ -8,12 +8,17 @@ module Clients
       def send!(channel, text, thread_ts = nil)
         return if channel == '#'
 
-        client.chat_postMessage(
-          channel:,
-          text:,
-          thread_ts:,
-          link_names: true
-        )
+        begin
+          client.chat_postMessage(
+            channel:,
+            text:,
+            thread_ts:,
+            link_names: true
+          )
+        rescue ::Slack::Web::Api::Errors::NotInChannel
+          join!(channel)
+          send!(channel, text, thread_ts)
+        end
       end
 
       def update!(channel, text, timestamp)
@@ -23,6 +28,12 @@ module Clients
           ts: timestamp,
           link_names: true
         )
+      end
+
+      def join!(channel)
+        client.conversations_join({
+                                    channel:
+                                  })
       end
     end
   end
