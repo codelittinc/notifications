@@ -4,7 +4,10 @@ class ApplicationController < ActionController::API
   attr_reader :client
 
   def index
-    render json: { status: 200 }
+    render json: {
+      status: 200,
+      slack_url: Clients::Slack::Oauth.auth_url
+    }
   end
 
   private

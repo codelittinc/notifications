@@ -12,11 +12,21 @@ module Clients
         @code = code
       end
 
+      def self.auth_url
+        parsed_redirect_url = URI.parse(redirect_url)
+        "https://slack.com/oauth/v2/authorize?client_id=2330326596.913768310308&scope=incoming-webhook&user_scope=&redirect_uri=#{parsed_redirect_url}"
+      end
+
+      def self.redirect_url
+        "#{ENV.fetch('HOST_URL', nil)}/oauth/slack"
+      end
+
       def authenticate!
         data =  {
           code: @code,
           client_id: Clients::Slack::Config.instance.client_id,
-          client_secret: Clients::Slack::Config.instance.client_secret
+          client_secret: Clients::Slack::Config.instance.client_secret,
+          redirect_uri: Clients::Slack::Oauth.redirect_url
         }
 
         post(data)
