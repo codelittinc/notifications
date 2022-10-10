@@ -9,6 +9,7 @@ Rails.application.configure do
   config.cache_classes = false
   config.hosts << 'notifications-api.notifications.dev.convox'
   config.hosts << '.sa.ngrok.io'
+  config.hosts << '.ngrok.io'
 
   # Do not eager load code on boot.
   config.eager_load = false
