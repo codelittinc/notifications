@@ -8,9 +8,7 @@ module Clients
       def list
         response = client.users_list
         members = response['members']
-        members.map do |member|
-          member['name']
-        end
+        members.pluck('name')
       end
     end
   end

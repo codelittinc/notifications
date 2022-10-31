@@ -15,6 +15,8 @@ gem 'net-smtp'
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 4.1'
 gem 'sidekiq'
+gem 'simple_request', git: 'https://github.com/kaiomagalhaes/simple_request.git'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 

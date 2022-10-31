@@ -10,8 +10,8 @@ module Oauth
 
       credentials = save_credentials!(data)
 
-      response = Request.post(organizations_url, '', organizations_body(credentials))
-      organizations_id = JSON.parse(response.body)['id']
+      response = SimpleRequest.post(organizations_url, body: organizations_body(credentials))
+      organizations_id = response['id']
 
       organizations_path = URI.parse("#{roadrunner_url}/organizations/#{organizations_id}").to_s
 
