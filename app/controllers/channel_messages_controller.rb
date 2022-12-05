@@ -8,7 +8,7 @@ class ChannelMessagesController < BaseMessageController
   end
 
   def target
-    "\##{params[:channel]}"
+    "##{params[:channel]}"
   end
 
   def content
