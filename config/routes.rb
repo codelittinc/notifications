@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   namespace :api do
     get '/users', to: 'users#index'
     get '/channels', to: 'channels#index'
+    get '/provider', to: 'provider_credentials#show'
   end
 
   # These below are necessary to keep backwards compatibility
