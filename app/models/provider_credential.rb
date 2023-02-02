@@ -19,4 +19,8 @@ class ProviderCredential < ApplicationRecord
   validates :team_id, presence: true
   validates :team_name, presence: true
   validates :application_key, presence: true
+
+  rails_admin do
+    exclude_fields :notifications
+  end
 end
