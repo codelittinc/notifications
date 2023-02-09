@@ -42,6 +42,9 @@ class MessageSender < ApplicationService
   end
 
   def execute_message!
+    # @TODO: remove this validation once all the notification requests are valid (any day after 03/01/2023)
+    return unless @notification_request.valid?
+
     class_const = Object.const_get("Clients::Slack::#{target_type.capitalize}")
     client = class_const.new(provider_credential)
 
