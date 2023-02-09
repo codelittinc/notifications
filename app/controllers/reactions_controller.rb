@@ -12,6 +12,6 @@ class ReactionsController < BaseMessageController
   end
 
   def target
-    "\##{params[:channel]}"
+    "##{params[:channel]}"
   end
 end
