@@ -8,10 +8,14 @@ class BaseMessageController < ApplicationController
 
   def create
     render json: { notification_id: notification_request.id.to_s }
+  rescue StandardError => e
+    render json: { error: e.message }, status: :bad_request
   end
 
   def update
     render json: { notification_id: notification_request.id.to_s }
+  rescue StandardError => e
+    render json: { error: e.message }, status: :bad_request
   end
 
   private
@@ -27,7 +31,7 @@ class BaseMessageController < ApplicationController
       uniq: params[:uniq],
       json: params
     )
-    notification.save
+    notification.save!
     notification
   end
 
@@ -51,5 +55,7 @@ class BaseMessageController < ApplicationController
 
   def execute_notification
     MessageSender.call(notification_request)
+  rescue StandardError => e
+    Rails.logger.debug e.message
   end
 end

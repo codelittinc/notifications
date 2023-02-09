@@ -145,7 +145,7 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       expect do
         post :create, params: json
-      end.to raise_error('It is trying to recreate a message that should be unique.')
+      end.not_to change(Notification, :count)
     end
 
     it 'duplicates a message when uniq param is not sent or is false' do
@@ -256,10 +256,10 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       expect do
         post :create, params: json
-      end.to raise_error(Slack::Web::Api::Errors::InvalidAuth).and change(Notification, :count).by(0)
+      end.not_to change(Notification, :count)
     end
 
-    it 'does not try sending a message if channel is empty' do
+    it 'returns an error if channel is empty' do
       json = {
         id: '123456',
         message: 'I am updating',
@@ -268,9 +268,9 @@ RSpec.describe ChannelMessagesController, type: :controller do
 
       request.headers['Authorization'] = authorization
 
-      expect do
-        post :create, params: json
-      end.not_to raise_error
+      post :create, params: json
+
+      expect(response.body).to eql('{"error":"Validation failed: Target name is too short (minimum is 3 characters)"}')
     end
   end
 end
