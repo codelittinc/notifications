@@ -6,7 +6,7 @@ module Clients
   module Slack
     class Channel < Client
       def send!(channel, text, thread_ts = nil)
-        return if channel == '#'
+        channel = remove_hash(channel) if channel.upcase == channel
 
         begin
           client.chat_postMessage(
@@ -39,6 +39,10 @@ module Clients
         client.conversations_join({
                                     channel:
                                   })
+      end
+
+      def remove_hash(channel)
+        channel.gsub('#', '')
       end
     end
   end
