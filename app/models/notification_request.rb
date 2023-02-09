@@ -21,4 +21,6 @@ class NotificationRequest < ApplicationRecord
   has_one :notification, dependent: :destroy
 
   belongs_to :provider_credential
+
+  validates :target_name, length: { minimum: 3 }
 end

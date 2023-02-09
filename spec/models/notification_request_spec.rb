@@ -24,5 +24,7 @@ RSpec.describe NotificationRequest, type: :model do
     it { should have_one(:notification) }
 
     it { should belong_to(:provider_credential) }
+
+    it { should validate_length_of(:target_name).is_at_least(3) }
   end
 end
