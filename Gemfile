@@ -7,7 +7,6 @@ gem 'rails', '~> 6.1.0'
 gem 'rails_admin', '~> 2.0'
 
 gem 'faraday', '>= 2.7.4'
-gem 'gelf'
 gem 'net-imap'
 gem 'net-pop'
 gem 'net-smtp'
@@ -44,4 +43,10 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :production do
+  # Datadog APIs using Ruby client
+  gem 'datadog_api_client'
+  gem 'ddtrace', require: 'ddtrace/auto_instrument'
 end
