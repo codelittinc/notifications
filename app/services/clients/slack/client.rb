@@ -17,9 +17,5 @@ module Clients
         @client = ::Slack::Web::Client.new
       end
     end
-
-    def remove_hash(channel)
-      channel.gsub('#', '')
-    end
   end
 end
