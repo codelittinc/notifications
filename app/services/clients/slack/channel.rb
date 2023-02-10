@@ -22,6 +22,8 @@ module Clients
       end
 
       def update!(channel, text, timestamp)
+        channel = remove_hash(channel) if channel.upcase == channel
+
         client.chat_update(
           channel:,
           text:,
@@ -39,10 +41,6 @@ module Clients
         client.conversations_join({
                                     channel:
                                   })
-      end
-
-      def remove_hash(channel)
-        channel.gsub('#', '')
       end
     end
   end

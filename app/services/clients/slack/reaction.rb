@@ -5,14 +5,16 @@ require 'slack-ruby-client'
 module Clients
   module Slack
     class Reaction < Client
-      def send!(formatted_channel, reaction, timestamp)
+      def send!(channel, reaction, timestamp)
         # @TODO: remove this cleaning from this method
         return unless timestamp
 
-        clean_reactions!(formatted_channel, timestamp)
+        channel = remove_hash(channel) if channel.upcase == channel
+
+        clean_reactions!(channel, timestamp)
 
         client.reactions_add(
-          channel: formatted_channel,
+          channel:,
           name: reaction,
           timestamp:
         )
@@ -20,26 +22,24 @@ module Clients
 
       private
 
-      def list_reactions(formatted_channel, timestamp)
-        response = client.reactions_get(
-          channel: formatted_channel,
-          timestamp:
-        )
+      def list_reactions(channel, timestamp)
+        response = client.reactions_get(channel:,
+                                        timestamp:)
         response['message']['reactions']
       end
 
-      def clean_reactions!(formatted_channel, timestamp)
-        reactions = list_reactions(formatted_channel, timestamp)
+      def clean_reactions!(channel, timestamp)
+        reactions = list_reactions(channel, timestamp)
         reactions&.each do |reaction|
-          remove_reaction!(reaction['name'], formatted_channel, timestamp)
+          remove_reaction!(reaction['name'], channel, timestamp)
         end
       end
 
-      def remove_reaction!(name, formatted_channel, timestamp)
+      def remove_reaction!(name, channel, timestamp)
         client.reactions_remove(
           name:,
           timestamp:,
-          channel: formatted_channel
+          channel:
         )
       end
     end
