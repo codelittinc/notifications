@@ -31,9 +31,3 @@
 
 en:
   hello: "Hello world"
-
-  admin:
-    actions:
-      replay_notification_request:
-        menu: "Rerun notification request"
-        success: "NotificationRequest added to the queue successfuly!"

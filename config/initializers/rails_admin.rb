@@ -3,8 +3,6 @@
 require 'nested_form/engine'
 require 'nested_form/builder_mixin'
 
-require Rails.root.join('app/services/admin/replay_notification_request.rb')
-
 RailsAdmin.config do |config|
   if Rails.env.production?
     config.authorize_with do
@@ -48,8 +46,6 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
-
-    replay_notification_request
 
     ## With an audit adapter, you can add:
     # history_index
