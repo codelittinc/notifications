@@ -80,13 +80,6 @@ Rails.application.configure do
           'The LOG_HOST and LOG_ENV environment variables are missing!'
   end
 
-  config.logger = GELF::Logger.new(
-    'logs.codelitt.dev',
-    12_201,
-    'WAN',
-    { host: ENV.fetch('LOG_HOST', nil), environment: ENV.fetch('LOG_ENV', nil) }
-  )
-
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 

@@ -42,6 +42,10 @@ module Clients
           channel:
         )
       end
+
+      def remove_hash(channel)
+        channel.gsub('#', '')
+      end
     end
   end
 end
