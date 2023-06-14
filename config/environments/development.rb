@@ -8,6 +8,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
   config.hosts << 'notifications-api.notifications.dev.convox'
+  config.hosts << 'notifications-api'
   config.hosts << '.sa.ngrok.io'
   config.hosts << '.ngrok.io'
 
