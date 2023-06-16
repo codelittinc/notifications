@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get '/users', to: 'users#index'
     get '/channels', to: 'channels#index'
     get '/provider', to: 'provider_credentials#show'
+    post '/provider', to: 'provider_credentials#create'
   end
 
   # These below are necessary to keep backwards compatibility
