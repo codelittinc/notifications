@@ -10,6 +10,7 @@ Rails.application.configure do
   config.hosts << 'notifications-api.notifications.dev.convox'
   config.hosts << '.sa.ngrok.io'
   config.hosts << '.ngrok.io'
+  config.hosts << '.tunnel.pyjam.as'
 
   # Do not eager load code on boot.
   config.eager_load = false
