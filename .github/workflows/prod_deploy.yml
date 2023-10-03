@@ -46,4 +46,4 @@ jobs:
         if: always()
         with:
           environment: prod
-          domain: api.roadrunner.codelitt.dev
+          domain: api.notifications.codelitt.dev
