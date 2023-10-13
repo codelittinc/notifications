@@ -44,9 +44,3 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
-group :production do
-  # Datadog APIs using Ruby client
-  gem 'datadog_api_client'
-  gem 'ddtrace', require: 'ddtrace/auto_instrument'
-end
