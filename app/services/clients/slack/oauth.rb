@@ -14,7 +14,7 @@ module Clients
 
       def self.auth_url
         parsed_redirect_url = URI.parse(redirect_url)
-        "https://slack.com/oauth/v2/authorize?client_id=2330326596.913768310308&scope=channels:join,chat:write,commands,reactions:read,reactions:write,users:read&user_scope=&redirect_uri=#{parsed_redirect_url}"
+        "https://slack.com/oauth/v2/authorize?client_id=2330326596.913768310308&scope=channels:join,channels:read,chat:write,commands,reactions:read,reactions:write,users:read&user_scope=&redirect_uri=#{parsed_redirect_url}"
       end
 
       def self.redirect_url
@@ -22,7 +22,7 @@ module Clients
       end
 
       def authenticate!
-        data =  {
+        data = {
           code: @code,
           client_id: Clients::Slack::Config.instance.client_id,
           client_secret: Clients::Slack::Config.instance.client_secret,
