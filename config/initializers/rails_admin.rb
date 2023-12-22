@@ -50,5 +50,14 @@ RailsAdmin.config do |config|
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+
+    config.model 'ProviderCredential' do
+      list do
+        field :team_name
+        field :team_id
+        field :application_key
+        field :access_key
+      end
+    end
   end
 end
