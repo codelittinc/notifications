@@ -26,6 +26,8 @@ gem 'redis-rails'
 
 gem 'data_migrate'
 
+gem 'ruby_notifications_client', git: 'https://github.com/codelittinc/ruby_notifications_client.git'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 gem 'slack-ruby-client', '2.0.0'
