@@ -3,6 +3,8 @@
 require 'nested_form/engine'
 require 'nested_form/builder_mixin'
 
+require Rails.root.join('app/services/admin/actions/replay_flow.rb')
+
 RailsAdmin.config do |config|
   if Rails.env.production?
     config.authorize_with do
@@ -46,6 +48,8 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
+    replay_flow
+
 
     ## With an audit adapter, you can add:
     # history_index
