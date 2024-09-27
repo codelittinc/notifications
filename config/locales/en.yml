@@ -34,3 +34,4 @@ en:
     actions:
       replay_flow:
         menu: "Rerun flow"
+        message: "We're replaying this flow right now!"

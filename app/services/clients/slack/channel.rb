@@ -37,12 +37,6 @@ module Clients
         channels.map { |channel| channel.slice(:id, :name).to_h }.sort_by { |hash| hash['name'] }
       end
 
-      def join!(channel)
-        client.conversations_join({
-                                    channel:
-                                  })
-      end
-
       def remove_hash(channel)
         channel.gsub('#', '')
       end
