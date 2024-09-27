@@ -6,18 +6,21 @@ module Clients
   module Slack
     class Reaction < Client
       def send!(channel, reaction, timestamp)
-        # @TODO: remove this cleaning from this method
         return unless timestamp
 
         channel = remove_hash(channel) if channel.upcase == channel
 
-        clean_reactions!(channel, timestamp)
-
-        client.reactions_add(
-          channel:,
-          name: reaction,
-          timestamp:
-        )
+        begin
+          clean_reactions!(channel, timestamp)
+          client.reactions_add(
+            channel:,
+            name: reaction,
+            timestamp:
+          )
+        rescue ::Slack::Web::Api::Errors::NotInChannel
+          join!(channel)
+          send!(channel, reaction, timestamp)
+        end
       end
 
       private

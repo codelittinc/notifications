@@ -16,6 +16,14 @@ module Clients
 
         @client = ::Slack::Web::Client.new
       end
+
+      private
+
+      def join!(channel)
+        client.conversations_join({
+                                    channel:
+                                  })
+      end
     end
   end
 end

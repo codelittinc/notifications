@@ -50,7 +50,6 @@ RailsAdmin.config do |config|
     show_in_app
     replay_flow
 
-
     ## With an audit adapter, you can add:
     # history_index
     # history_show

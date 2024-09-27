@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module Actions
     class ReplayFlow < RailsAdmin::Config::Actions::Base
@@ -22,7 +24,7 @@ module Admin
 
       register_instance_option :controller do
         proc do
-          flash[:success] = "We're replaying this flow right now!"
+          flash[:success] = t('admin.actions.replay_flow.message')
           if Rails.env.production?
             HardWorker.perform_async(@object.id)
           else
