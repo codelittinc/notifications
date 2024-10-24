@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 Sidekiq.configure_server do |config|
-  config.redis = { url:  ENV.fetch('REDIS_URL', nil) }
+  config.redis = {
+    url: ENV.fetch('REDIS_URL', nil),
+    ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+  }
 
   config.error_handlers << proc do |ex, ctx_hash, _cfg|
     job = ctx_hash[:job]['class']
@@ -13,5 +16,8 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: ENV.fetch('REDIS_URL', nil) }
+  config.redis = {
+    url: ENV.fetch('REDIS_URL', nil),
+    ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+  }
 end

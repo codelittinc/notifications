@@ -1,5 +1,5 @@
 rm latest.dump
-docker-compose up -d
+docker compose up -d
 docker stop notifications-api
 docker stop notifications-sidekiq
 heroku pg:backups:capture --app prod-notifications
