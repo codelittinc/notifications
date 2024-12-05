@@ -42,16 +42,19 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
-  # when problems arise.
   config.log_level = :debug
 
+  # Configure Rails Semantic Logger
+  config.semantic_logger.application = "Notifications API"  # Change this to your app name
+  config.semantic_logger.backtrace_level = :error
+  config.rails_semantic_logger.format = :json
+  config.rails_semantic_logger.quiet_assets = true
+
   # Add detailed error logging
-  config.rails_semantic_logger.backtrace_cleaner = nil
   config.semantic_logger.backtrace_level = :debug
 
   # Add formatted logging
   config.colorize_logging = false
-  config.rails_semantic_logger.format = :json
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
