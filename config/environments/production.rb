@@ -45,6 +45,14 @@ Rails.application.configure do
   # when problems arise.
   config.log_level = :debug
 
+  # Add detailed error logging
+  config.rails_semantic_logger.backtrace_cleaner = nil
+  config.semantic_logger.backtrace_level = :debug
+
+  # Add formatted logging
+  config.colorize_logging = false
+  config.rails_semantic_logger.format = :json
+
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
