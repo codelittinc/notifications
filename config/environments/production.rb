@@ -39,7 +39,7 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
   config.log_level = :debug
@@ -64,8 +64,14 @@ Rails.application.configure do
     ErrorsController.action(:show).call(env)
   end
 
-  # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', nil) }
+  # Use Redis for caching in production
+  config.cache_store = :redis_cache_store, {
+    url: ENV['REDIS_URL'],
+    ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE },
+    error_handler: -> (method:, returning:, exception:) {
+      Rails.logger.error("Redis cache error: #{exception.message}")
+    }
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
