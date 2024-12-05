@@ -27,4 +27,10 @@ class ApplicationController < ActionController::API
   def authorization_key
     request.headers['Authorization']&.gsub('Bearer ', '')
   end
+
+  rescue_from StandardError do |e|
+    Rails.logger.error("Error: #{e.message}")
+    Rails.logger.error(e.backtrace.join("\n"))
+    render json: { error: e.message, backtrace: e.backtrace }, status: :internal_server_error
+  end
 end

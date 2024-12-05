@@ -44,20 +44,25 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   config.log_level = :debug
 
-  # Configure Rails Semantic Logger
-  config.semantic_logger.application = "Notifications API"  # Change this to your app name
-  config.semantic_logger.backtrace_level = :error
-  config.rails_semantic_logger.format = :json
-  config.rails_semantic_logger.quiet_assets = true
+  # Configure detailed logging
+  config.logger = ActiveSupport::Logger.new(STDOUT)
+  config.logger.formatter = proc do |severity, datetime, progname, msg|
+    {
+      timestamp: datetime.iso8601,
+      level: severity,
+      message: msg,
+      program: progname
+    }.to_json + "\n"
+  end
 
-  # Add detailed error logging
-  config.semantic_logger.backtrace_level = :debug
+  # Show the full error backtrace
+  config.consider_all_requests_local = true  # Temporarily enable this for debugging
 
-  # Add formatted logging
-  config.colorize_logging = false
-
-  # Prepend all log lines with the following tags.
-  config.log_tags = [:request_id]
+  # Enable better error pages
+  config.exceptions_app = ->(env) do
+    error = env["action_dispatch.exception"]
+    ErrorsController.action(:show).call(env)
+  end
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', nil) }
