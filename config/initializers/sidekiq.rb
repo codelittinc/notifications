@@ -4,6 +4,7 @@ Sidekiq.configure_server do |config|
   config.redis = {
     url: ENV.fetch('REDIS_URL', nil),
     ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+    namespace: ENV.fetch('SIDEKIQ_NAMESPACE', 'default')
   }
 
   config.error_handlers << proc do |ex, ctx_hash, _cfg|
