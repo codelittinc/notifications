@@ -25,13 +25,20 @@ Rails.application.configure do
 
   # Use Redis if available, otherwise fallback to memory cache
   if ENV['REDIS_URL'].present?
-    config.cache_store = :redis_cache_store, { 
+    redis_config = { 
       url: ENV.fetch('REDIS_URL', nil),
       connect_timeout: 2,
       read_timeout: 1,
       write_timeout: 1,
       reconnect_attempts: 1
     }
+    
+    # Handle SSL configuration for Redis URLs with self-signed certificates
+    if ENV['REDIS_URL'].start_with?('rediss://')
+      redis_config[:ssl_params] = { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+    end
+    
+    config.cache_store = :redis_cache_store, redis_config
   else
     Rails.logger.warn "REDIS_URL not set, using memory cache store"
     config.cache_store = :memory_store, { size: 64.megabytes }
