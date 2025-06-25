@@ -23,7 +23,7 @@ module Api
           Rails.logger.info "[UsersController#index] Cached data class: #{cached_data.class}"
         end
 
-        users = Rails.cache.fetch(users_cache_key, expires_in: 60.seconds) do
+        users = Rails.cache.fetch(users_cache_key, expires_in: 10.minutes) do
           Rails.logger.info "[UsersController#index] === CACHE MISS - FETCHING FROM SLACK API ==="
           Rails.logger.info "[UsersController#index] About to call Slack API"
           
@@ -36,6 +36,15 @@ module Api
           
           # Log what we're about to cache
           Rails.logger.info "[UsersController#index] Caching data: #{slack_users&.first(2)&.to_json}" if slack_users&.any?
+          
+          # Also store as backup cache with longer expiration
+          begin
+            backup_cache_key = "#{users_cache_key}_backup"
+            Rails.cache.write(backup_cache_key, slack_users, expires_in: 24.hours)
+            Rails.logger.info "[UsersController#index] Stored backup cache with key: #{backup_cache_key}"
+          rescue => e
+            Rails.logger.warn "[UsersController#index] Failed to store backup cache: #{e.message}"
+          end
           
           slack_users
         end
@@ -61,22 +70,31 @@ module Api
         
         # Check if it's a rate limit error and serve from cache if available
         if e.is_a?(Slack::Web::Api::Errors::TooManyRequestsError)
-          Rails.logger.warn "[UsersController#index] Rate limited! Attempting to serve stale cache data"
+          Rails.logger.warn "[UsersController#index] Rate limited! Attempting to serve backup cache data"
           
-          # Try to get any cached data, even if expired
-          stale_cache_key = "#{users_cache_key}_stale"
-          stale_users = Rails.cache.read(stale_cache_key)
+          # Try backup cache first, then stale cache
+          backup_cache_key = "#{users_cache_key}_backup"
+          backup_users = Rails.cache.read(backup_cache_key)
           
-          if stale_users.present?
-            Rails.logger.info "[UsersController#index] Serving stale cache data with #{stale_users.size} users"
-            render json: stale_users
+          if backup_users.present?
+            Rails.logger.info "[UsersController#index] Serving backup cache data with #{backup_users.size} users"
+            render json: backup_users
           else
-            Rails.logger.error "[UsersController#index] No stale cache available, returning rate limit error"
-            render json: { 
-              error: 'Rate limited', 
-              message: 'Slack API rate limit exceeded. Please try again in 60 seconds.',
-              retry_after: 60
-            }, status: :too_many_requests
+            # Try to get any other cached data, even if expired
+            stale_cache_key = "#{users_cache_key}_stale"
+            stale_users = Rails.cache.read(stale_cache_key)
+            
+            if stale_users.present?
+              Rails.logger.info "[UsersController#index] Serving stale cache data with #{stale_users.size} users"
+              render json: stale_users
+            else
+              Rails.logger.error "[UsersController#index] No backup or stale cache available, returning rate limit error"
+              render json: { 
+                error: 'Rate limited', 
+                message: 'Slack API rate limit exceeded. Please try again in 60 seconds.',
+                retry_after: 60
+              }, status: :too_many_requests
+            end
           end
         else
           render json: { 

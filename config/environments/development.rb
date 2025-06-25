@@ -23,7 +23,19 @@ Rails.application.configure do
   # Run rails dev:cache to toggle caching.
   config.action_controller.perform_caching = true
 
-  config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', nil) }
+  # Use Redis if available, otherwise fallback to memory cache
+  if ENV['REDIS_URL'].present?
+    config.cache_store = :redis_cache_store, { 
+      url: ENV.fetch('REDIS_URL', nil),
+      connect_timeout: 2,
+      read_timeout: 1,
+      write_timeout: 1,
+      reconnect_attempts: 1
+    }
+  else
+    Rails.logger.warn "REDIS_URL not set, using memory cache store"
+    config.cache_store = :memory_store, { size: 64.megabytes }
+  end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local

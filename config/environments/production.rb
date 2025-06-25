@@ -58,7 +58,17 @@ Rails.application.configure do
   ]
 
   # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', nil) }
+  # Redis with fallback handling and connection timeouts
+  config.cache_store = :redis_cache_store, { 
+    url: ENV.fetch('REDIS_URL', nil),
+    connect_timeout: 2,
+    read_timeout: 1,
+    write_timeout: 1,
+    reconnect_attempts: 1,
+    error_handler: -> (method:, returning:, exception:) {
+      Rails.logger.error "Redis cache error in #{method}: #{exception.class}: #{exception.message}"
+    }
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
