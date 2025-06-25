@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
     else
       render json: { error: 'Unauthorized', message: 'Invalid or missing authorization key' }, status: :unauthorized
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "Authentication error: #{e.class}: #{e.message}"
     render json: { error: 'Authentication error', message: e.message }, status: :internal_server_error
   end
