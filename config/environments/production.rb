@@ -59,7 +59,7 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   # Redis with fallback handling and connection timeouts
-  config.cache_store = :redis_cache_store, { 
+  redis_config = { 
     url: ENV.fetch('REDIS_URL', nil),
     connect_timeout: 2,
     read_timeout: 1,
@@ -69,6 +69,13 @@ Rails.application.configure do
       Rails.logger.error "Redis cache error in #{method}: #{exception.class}: #{exception.message}"
     }
   }
+  
+  # Handle SSL configuration for Redis URLs with self-signed certificates
+  if ENV['REDIS_URL'].present? && ENV['REDIS_URL'].start_with?('rediss://')
+    redis_config[:ssl_params] = { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+  end
+  
+  config.cache_store = :redis_cache_store, redis_config
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
