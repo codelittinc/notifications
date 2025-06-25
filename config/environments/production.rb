@@ -13,7 +13,8 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local = false
+  # Enable full error reports to log detailed server errors
+  config.consider_all_requests_local = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
@@ -46,7 +47,15 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [:request_id]
+  # Enhanced logging to capture comprehensive request information
+  config.log_tags = [
+    :request_id,
+    :remote_ip,
+    -> request { "User-Agent: #{request.user_agent}" },
+    -> request { "Method: #{request.method}" },
+    -> request { "Path: #{request.path}" },
+    -> request { "Params: #{request.params.except('controller', 'action').to_json}" }
+  ]
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', nil) }
@@ -60,6 +69,13 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
+
+  # Enable detailed error reporting and backtrace logging
+  config.action_controller.log_warning_on_csrf_failure = true
+  config.action_controller.perform_caching = true
+  
+  # Log all SQL queries for debugging
+  config.active_record.logger = Logger.new(STDOUT) if ENV['LOG_SQL'] == 'true'
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -98,4 +114,21 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  # Additional logging configuration for comprehensive request and error tracking
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger::DEBUG
+  
+  # Enable verbose query logging
+  config.active_record.verbose_query_logs = true
+  
+  # Log slow queries
+  config.active_record.warn_on_records_fetched_greater_than = 1000
+  
+  # Ensure we log all exceptions with full backtraces
+  config.action_dispatch.show_exceptions = true
+  config.action_dispatch.show_detailed_exceptions = true
+  
+  # Enable parameter logging (be careful with sensitive data)
+  config.filter_parameters += [:password, :password_confirmation, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn]
 end
